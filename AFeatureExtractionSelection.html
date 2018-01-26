@@ -303,7 +303,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Machine Learning and Data Mining the Gaia Archive</a>
+      <a class="navbar-brand" href="index.html">5 Introduction to Machine Learning: Unsupervised Classification</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -311,13 +311,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="AFeatureExtractionSelection.html">Feature Extraction/Selection</a>
-</li>
-<li>
   <a href="BUnsupervisedClassification.html">Unsupervised Classification</a>
-</li>
-<li>
-  <a href="CBayesianInference.html">Bayesian Inference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -396,7 +390,7 @@ div.tocify {
 <p>If our spectra had only 2 measured fluxes, this furthest example would be at a distance equal to <span class="math inline">\(\sqrt{0.1^2+0.1^2}\)</span>=0.1414214.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">cbind</span>(<span class="dv">0</span>,<span class="dv">0</span>),<span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dt">xlab=</span><span class="st">&quot;feature #1&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;feature #2&quot;</span>,<span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
 <span class="kw">points</span>(<span class="kw">cbind</span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>),<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
-r &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">0.1</span>^<span class="dv">2</span><span class="fl">+0.1</span>^<span class="dv">2</span>)
+r &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">0.1</span><span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="fl">0.1</span><span class="op">^</span><span class="dv">2</span>)
 <span class="kw">draw.circle</span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>,r)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-2-1.png" width="100px" height="750px" /></p>
 <p>How many examples do we need to ensure that there is always an example within a radius of 0.1414214? Well, the total area of the square is 1, and that of the circle is <span class="math inline">\(\pi*r^2\)</span>=0.0628319 so we need <span class="math inline">\(\frac{1}{\pi*r^2}\)</span>=15.9154943.</p>
@@ -404,8 +398,8 @@ r &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">0.
 <p>Let us now look at the true RVS space. The hypercube volume still is 1, but the volume of the hypersphere in <span class="math inline">\(n\)</span> dimensions is now <span class="math inline">\(\frac{2\cdot r^d*\pi^{n/2}}{\Gamma(n/2)}\)</span>. Our RVS spectra have 1061 fluxes, so if we still enforce that the farthest example is at most at a 10% in each dimension, the examples have to be <strong>closer</strong> than <span class="math display">\[d=\sqrt{\sum_{i=1}^{n} 0.1^2}.\]</span> That is, there has to be an example at a distance d&lt;3.2572995.</p>
 <p>How many examples do we need to ensure that there is at least one within a circle of radius 3.2572995?</p>
 <p>A hypersphere in 1061 dimensions of radius 3.2572995 has a log-volume equal to</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">sqrt</span>(n*<span class="fl">0.1</span>^<span class="dv">2</span>)
-logVsphere &lt;-<span class="st"> </span><span class="kw">log</span>(<span class="dv">2</span>)+n*<span class="kw">log</span>(r)+(n/<span class="dv">2</span>)*<span class="kw">log</span>(pi)-<span class="kw">lgamma</span>(n/<span class="dv">2</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">sqrt</span>(n<span class="op">*</span><span class="fl">0.1</span><span class="op">^</span><span class="dv">2</span>)
+logVsphere &lt;-<span class="st"> </span><span class="kw">log</span>(<span class="dv">2</span>)<span class="op">+</span>n<span class="op">*</span><span class="kw">log</span>(r)<span class="op">+</span>(n<span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">log</span>(pi)<span class="op">-</span><span class="kw">lgamma</span>(n<span class="op">/</span><span class="dv">2</span>)
 <span class="kw">print</span>(logVsphere)</code></pre></div>
 <pre><code>## [1] -934.638</code></pre>
 <p>So (in the hypothesis of training examples distributed homogeneously in the hypercube), we would need</p>
@@ -455,29 +449,29 @@ Spec &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span clas
 ## 
 ##     color.scale</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="dt">space=</span><span class="st">&quot;rgb&quot;</span>)
-SetupPalette&lt;-function(c)
+SetupPalette&lt;-<span class="cf">function</span>(c)
 {
   nl &lt;-<span class="st"> </span><span class="dv">50</span>
   palette&lt;-<span class="kw">pal</span>(nl)
   <span class="co">#palette &lt;- tim.colors(nl)</span>
   <span class="co">#palette &lt;- heat.colors(nl)</span>
-  col &lt;-<span class="st"> </span>c-<span class="kw">min</span>(c,<span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-  col &lt;-<span class="st"> </span>col/<span class="kw">max</span>(col,<span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-  colour &lt;-<span class="st"> </span>palette[<span class="kw">as.integer</span>(((nl<span class="dv">-1</span>)*col)+<span class="dv">1</span>)]
+  col &lt;-<span class="st"> </span>c<span class="op">-</span><span class="kw">min</span>(c,<span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+  col &lt;-<span class="st"> </span>col<span class="op">/</span><span class="kw">max</span>(col,<span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+  colour &lt;-<span class="st"> </span>palette[<span class="kw">as.integer</span>(((nl<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>col)<span class="op">+</span><span class="dv">1</span>)]
   <span class="kw">return</span>(colour)
 }
 
 n &lt;-<span class="st"> </span><span class="kw">dim</span>(Spec)[<span class="dv">1</span>]
 col &lt;-<span class="st"> </span><span class="kw">SetupPalette</span>(StPa[,<span class="dv">1</span>])
 
-wv &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="dv">10</span>*<span class="kw">read.table</span>(<span class="st">&quot;wavelengths.dat&quot;</span>)[<span class="dv">1</span>,<span class="dv">90</span>:<span class="dv">1150</span>])
+wv &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="dv">10</span><span class="op">*</span><span class="kw">read.table</span>(<span class="st">&quot;wavelengths.dat&quot;</span>)[<span class="dv">1</span>,<span class="dv">90</span><span class="op">:</span><span class="dv">1150</span>])
 
 <span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>))
 <span class="kw">plot</span>(<span class="kw">as.numeric</span>(Spec[<span class="dv">1</span>,]),<span class="dt">ty=</span><span class="st">&quot;l&quot;</span>,<span class="dt">col=</span><span class="kw">alpha</span>(col[<span class="dv">1</span>],<span class="fl">0.2</span>),<span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">0.0005</span>,<span class="fl">0.001</span>), <span class="dt">xlab=</span><span class="st">&quot;Pixel Number&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Normalized Flux&quot;</span>)
 
-<span class="kw">axis</span>(<span class="dv">3</span>,<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>),<span class="dt">labels=</span>wv[<span class="dv">1</span>+<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>)])
+<span class="kw">axis</span>(<span class="dv">3</span>,<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>),<span class="dt">labels=</span>wv[<span class="dv">1</span><span class="op">+</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>)])
 
-for (i in <span class="dv">2</span>:n)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>n)
 {
   <span class="kw">lines</span>(<span class="kw">as.numeric</span>(Spec[i,]),<span class="dt">col=</span><span class="kw">alpha</span>(col[i],<span class="fl">0.2</span>))
 }
@@ -492,16 +486,16 @@ for (i in <span class="dv">2</span>:n)
 <li>Even for the same temperature, there are very significant variations across spectra</li>
 </ul>
 <p>Let us look at the other free variable: surface gravity.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mask &lt;-<span class="st"> </span>StPa[,<span class="dv">1</span>] ==<span class="st"> </span><span class="fl">3.9</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mask &lt;-<span class="st"> </span>StPa[,<span class="dv">1</span>] <span class="op">==</span><span class="st"> </span><span class="fl">3.9</span>
 
 col &lt;-<span class="st"> </span><span class="kw">SetupPalette</span>(StPa[,<span class="dv">2</span>])
 
 <span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>))
 <span class="kw">plot</span>(<span class="kw">as.numeric</span>(Spec[mask,][<span class="dv">1</span>,]),<span class="dt">ty=</span><span class="st">&quot;l&quot;</span>,<span class="dt">col=</span><span class="kw">alpha</span>(col[mask][<span class="dv">1</span>],<span class="fl">0.2</span>),<span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">0.0005</span>,<span class="fl">0.001</span>), <span class="dt">xlab=</span><span class="st">&quot;Pixel Number&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Normalized Flux&quot;</span>)
 
-<span class="kw">axis</span>(<span class="dv">3</span>,<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>),<span class="dt">labels=</span>wv[<span class="dv">1</span>+<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>)])
+<span class="kw">axis</span>(<span class="dv">3</span>,<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>),<span class="dt">labels=</span>wv[<span class="dv">1</span><span class="op">+</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>)])
 
-for (i in <span class="dv">2</span>:<span class="kw">sum</span>(mask))
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">sum</span>(mask))
 {
   <span class="kw">lines</span>(<span class="kw">as.numeric</span>(Spec[mask,][i,]),<span class="dt">col=</span><span class="kw">alpha</span>(col[mask][i],<span class="fl">0.2</span>))
 }
@@ -665,7 +659,7 @@ for (i in <span class="dv">2</span>:<span class="kw">sum</span>(mask))
 </tbody>
 </table>
 <p>This is a very simple, artificial example defined to illustrate some of the key concepts of dimensionality reduction. From our perspective, the solution is clear: keep <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_4\)</span> and make sure that your model is capable of capturing highly non-linear and disconnected boundaries such as those implied by this problem.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(cases[,<span class="dv">1</span>],cases[,<span class="dv">4</span>],<span class="dt">xlab=</span><span class="kw">expression</span>(X[<span class="dv">1</span>]), <span class="dt">ylab=</span><span class="kw">expression</span>(X[<span class="dv">4</span>]),<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">cex=</span><span class="dv">3</span>,<span class="dt">col=</span>class<span class="dv">+1</span>,<span class="dt">xlim=</span><span class="kw">c</span>(-.<span class="dv">5</span>,<span class="fl">1.5</span>), <span class="dt">ylim=</span><span class="kw">c</span>(-.<span class="dv">5</span>,<span class="fl">1.5</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(cases[,<span class="dv">1</span>],cases[,<span class="dv">4</span>],<span class="dt">xlab=</span><span class="kw">expression</span>(X[<span class="dv">1</span>]), <span class="dt">ylab=</span><span class="kw">expression</span>(X[<span class="dv">4</span>]),<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">cex=</span><span class="dv">3</span>,<span class="dt">col=</span>class<span class="op">+</span><span class="dv">1</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span>.<span class="dv">5</span>,<span class="fl">1.5</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span>.<span class="dv">5</span>,<span class="fl">1.5</span>))</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>The set <span class="math inline">\(\{X_1, X_4\}\)</span> is at the same time sufficient and minimal. There are other alternatives: <span class="math inline">\(\{X_1, X_2, X_3\}\)</span> is sufficient (but not minimal). There is redundancy in the subset <span class="math inline">\(\{X_2, X_3, X_4\)</span>, and <span class="math inline">\(X_5\)</span> is completely irrelevant for the determination of the class. Unfortunately, we hardly ever are all-wise scientists sitting on a cloud, and we never know an analytical expression for the class.</p>
 <p>Now, for the definitions. This is the particular set I (and a vast majority of the community) agree with. There are <a href="https://www.researchgate.net/profile/Ron_Kohavi/publication/223713209_Wrappers_for_Feature_Subset_Selection/links/02e7e51bcc03dd7eef000000.pdf?origin=publication_detail">alternatives</a>, of course.</p>
@@ -710,17 +704,17 @@ df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class=
 <p class="caption">By DenisBoigelot, original uploader was Imagecreator - Own work, original uploader was Imagecreator, CC0, <a href="https://commons.wikimedia.org/w/index.php?curid=15165296" class="uri">https://commons.wikimedia.org/w/index.php?curid=15165296</a></p>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pearson&#39;s linear correlation coefficient</span>
-pearson.score &lt;-<span class="st"> </span><span class="kw">linear.correlation</span>(teff~.,df)</code></pre></div>
+pearson.score &lt;-<span class="st"> </span><span class="kw">linear.correlation</span>(teff<span class="op">~</span>.,df)</code></pre></div>
 <p>Let us visualize the relevance of the RVS fluxes according to this definition:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Here we define a  plotting function</span>
-plot.score &lt;-<span class="st"> </span>function(score){
+plot.score &lt;-<span class="st"> </span><span class="cf">function</span>(score){
 col &lt;-<span class="st"> </span><span class="kw">SetupPalette</span>(score[,<span class="dv">1</span>])
 <span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>))
 <span class="kw">plot</span>(<span class="kw">as.numeric</span>(Spec[<span class="dv">1</span>,]),<span class="dt">pch=</span><span class="st">&quot;.&quot;</span>,<span class="dt">col=</span>col,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">0.0005</span>,<span class="fl">0.001</span>), <span class="dt">xlab=</span><span class="st">&quot;Pixel Number&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Normalized Flux&quot;</span>)
 
-<span class="kw">axis</span>(<span class="dv">3</span>,<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>),<span class="dt">labels=</span>wv[<span class="dv">1</span>+<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>)])
+<span class="kw">axis</span>(<span class="dv">3</span>,<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>),<span class="dt">labels=</span>wv[<span class="dv">1</span><span class="op">+</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>,<span class="dt">by=</span><span class="dv">200</span>)])
 
-for (i in <span class="dv">2</span>:<span class="kw">dim</span>(Spec)[<span class="dv">1</span>])
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">dim</span>(Spec)[<span class="dv">1</span>])
 {
   <span class="kw">points</span>(<span class="kw">as.numeric</span>(Spec[i,]),<span class="dt">col=</span>col,<span class="dt">pch=</span><span class="st">&quot;.&quot;</span>)
 }
@@ -749,7 +743,7 @@ for (i in <span class="dv">2</span>:<span class="kw">dim</span>(Spec)[<span clas
 \rho = \frac{\sigma_{rxry}}{\sigma_{rx}\sigma_{ry}}
 \]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Spearman&#39;s correlation</span>
-spearman.score &lt;-<span class="st"> </span><span class="kw">rank.correlation</span>(teff~.,df)
+spearman.score &lt;-<span class="st"> </span><span class="kw">rank.correlation</span>(teff<span class="op">~</span>.,df)
 <span class="kw">plot.score</span>(spearman.score)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Now, let us plot one and the other:</p>
@@ -784,16 +778,16 @@ H(x,y) = H(x)+H(y|x)
 H(y|x) = H(x,y)-H(x) 
 \]</span></p>
 <p>Now, <span class="math inline">\(H(x)\)</span> is larger for variables with large supports.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>/<span class="dv">10</span>,<span class="dv">10</span>)
--<span class="kw">sum</span>(x*<span class="kw">log</span>(x))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">10</span>,<span class="dv">10</span>)
+<span class="op">-</span><span class="kw">sum</span>(x<span class="op">*</span><span class="kw">log</span>(x))</code></pre></div>
 <pre><code>## [1] 2.302585</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>/<span class="dv">100</span>,<span class="dv">100</span>)
--<span class="kw">sum</span>(y*<span class="kw">log</span>(y))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">100</span>,<span class="dv">100</span>)
+<span class="op">-</span><span class="kw">sum</span>(y<span class="op">*</span><span class="kw">log</span>(y))</code></pre></div>
 <pre><code>## [1] 4.60517</code></pre>
 <p>so <span class="math inline">\(H(y|x)\)</span> will be smaller for these large support variables, and the Info Gain larger.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Information Gain</span>
 
-infogain.score &lt;-<span class="st"> </span><span class="kw">information.gain</span>(teff~.,df)
+infogain.score &lt;-<span class="st"> </span><span class="kw">information.gain</span>(teff<span class="op">~</span>.,df)
 <span class="kw">plot.score</span>(infogain.score)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
@@ -804,7 +798,7 @@ infogain.score &lt;-<span class="st"> </span><span class="kw">information.gain</
 GR(x) = \frac{IG(x)}{H(x)}
 \]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Gain Ratio</span>
-gainratio.score &lt;-<span class="st"> </span><span class="kw">gain.ratio</span>(teff~.,df)
+gainratio.score &lt;-<span class="st"> </span><span class="kw">gain.ratio</span>(teff<span class="op">~</span>.,df)
 <span class="kw">plot.score</span>(gainratio.score)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
@@ -820,7 +814,7 @@ I(x,y) = \int\int \log p(x,y)\cdot \log\frac{p(x,y)}{p(x)p(y)}{\rm d}x{\rm d}y
 \]</span></p>
 <p>is the Mutual Information. Mutual information measures the distance between two probability distributions: the joint probability distribution and the two marginals. For independent variables <span class="math inline">\(p(x,y) = p(x)*p(y)\)</span> and hence, the mutual information vanishes. So MI is a measure of conditional dependence.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Symmetric Uncertainty</span>
-symuncert.score &lt;-<span class="st"> </span><span class="kw">symmetrical.uncertainty</span>(teff~.,df)
+symuncert.score &lt;-<span class="st"> </span><span class="kw">symmetrical.uncertainty</span>(teff<span class="op">~</span>.,df)
 <span class="kw">plot.score</span>(symuncert.score)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>And here you have a comparison of the various measures.</p>
@@ -845,17 +839,17 @@ symuncert.score &lt;-<span class="st"> </span><span class="kw">symmetrical.uncer
 ## 
 ##     sigma</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw">rbind</span>(cases,cases,cases,cases)
-data2 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">runif</span>(<span class="dv">64</span>)*<span class="dv">10</span>)+<span class="dv">1</span>
+data2 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">runif</span>(<span class="dv">64</span>)<span class="op">*</span><span class="dv">10</span>)<span class="op">+</span><span class="dv">1</span>
 data2 &lt;-<span class="st"> </span>cases[data2,]</code></pre></div>
 <p>Now, let us look at the frequencies in the two datasets…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">apply</span>(data1,<span class="dv">2</span>,as.factor))
 data2 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">apply</span>(data2,<span class="dv">2</span>,as.factor))
 
 cases1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>,<span class="dv">2</span>,<span class="dv">2</span>)
-cases1 [<span class="dv">1</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]==<span class="dv">0</span> &amp;<span class="st"> </span>data1[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">0</span>)
-cases1 [<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]==<span class="dv">1</span> &amp;<span class="st"> </span>data1[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">0</span>)
-cases1 [<span class="dv">1</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]==<span class="dv">0</span> &amp;<span class="st"> </span>data1[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">1</span>)
-cases1 [<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]==<span class="dv">1</span> &amp;<span class="st"> </span>data1[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">1</span>)
+cases1 [<span class="dv">1</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>data1[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
+cases1 [<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>data1[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
+cases1 [<span class="dv">1</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>data1[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+cases1 [<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data1[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>data1[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
 <span class="kw">rownames</span>(cases1)&lt;-<span class="kw">c</span>(<span class="st">&quot;class=0&quot;</span>,<span class="st">&quot;class=1&quot;</span>)
 <span class="kw">kable</span>(cases1,<span class="dt">col.names =</span> <span class="kw">c</span>(<span class="st">&quot;x5=0&quot;</span>,<span class="st">&quot;x5=1&quot;</span>),<span class="dt">row.names =</span> T)</code></pre></div>
 <table>
@@ -880,10 +874,10 @@ cases1 [<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="s
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cases2 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>,<span class="dv">2</span>,<span class="dv">2</span>)
-cases2 [<span class="dv">1</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]==<span class="dv">0</span> &amp;<span class="st"> </span>data2[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">0</span>)
-cases2 [<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]==<span class="dv">1</span> &amp;<span class="st"> </span>data2[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">0</span>)
-cases2 [<span class="dv">1</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]==<span class="dv">0</span> &amp;<span class="st"> </span>data2[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">1</span>)
-cases2 [<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]==<span class="dv">1</span> &amp;<span class="st"> </span>data2[,<span class="dv">6</span>] ==<span class="st"> </span><span class="dv">1</span>)
+cases2 [<span class="dv">1</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>data2[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
+cases2 [<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>data2[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
+cases2 [<span class="dv">1</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>data2[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+cases2 [<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(data2[,<span class="dv">5</span>]<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>data2[,<span class="dv">6</span>] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
 <span class="kw">rownames</span>(cases2)&lt;-<span class="kw">c</span>(<span class="st">&quot;class=0&quot;</span>,<span class="st">&quot;class=1&quot;</span>)
 <span class="kw">kable</span>(cases2,<span class="dt">col.names =</span> <span class="kw">c</span>(<span class="st">&quot;x5=0&quot;</span>,<span class="st">&quot;x5=1&quot;</span>),<span class="dt">row.names =</span> T)</code></pre></div>
 <table>
@@ -913,14 +907,14 @@ cases2 [<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="s
 <span class="kw">plot</span>(res)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitted &lt;-<span class="st"> </span><span class="kw">bn.fit</span>(res,<span class="dt">data=</span>data1)
-<span class="kw">cpquery</span>(fitted,(class==<span class="dv">1</span>),(x1==<span class="st">&quot;1&quot;</span> &amp;<span class="st"> </span>x4==<span class="st">&quot;0&quot;</span>))</code></pre></div>
+<span class="kw">cpquery</span>(fitted,(class<span class="op">==</span><span class="dv">1</span>),(x1<span class="op">==</span><span class="st">&quot;1&quot;</span> <span class="op">&amp;</span><span class="st"> </span>x4<span class="op">==</span><span class="st">&quot;0&quot;</span>))</code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>And now, for the random sample:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res =<span class="st"> </span><span class="kw">tabu</span>(data2,<span class="dt">score=</span><span class="st">&quot;bic&quot;</span>)
 <span class="kw">plot</span>(res)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitted &lt;-<span class="st"> </span><span class="kw">bn.fit</span>(res,<span class="dt">data=</span>data1)
-<span class="kw">cpquery</span>(fitted,(class==<span class="dv">1</span>),(x1==<span class="st">&quot;1&quot;</span> &amp;<span class="st"> </span>x4==<span class="st">&quot;0&quot;</span>))</code></pre></div>
+<span class="kw">cpquery</span>(fitted,(class<span class="op">==</span><span class="dv">1</span>),(x1<span class="op">==</span><span class="st">&quot;1&quot;</span> <span class="op">&amp;</span><span class="st"> </span>x4<span class="op">==</span><span class="st">&quot;0&quot;</span>))</code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>Hence, one aims at Minimum-redundancy-maximum-relevance (mRMR) feature selection</p>
 <p>This can be implemented in practice in several ways, depending on the way we measure relevance (we have seen this already) and redundancy. Redundancy is often measured with the same scores as relevance, except this time using two predictive variables rather than one and the class. Therefore, we have redundancy measures based on correlation and information theory.</p>
@@ -950,19 +944,19 @@ cases2 [<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="s
 <p><span class="math display">\[
 FoM(subset) = \frac{k\cdot \overline{r_{xy}}}{\sqrt{k\cdot(k-1)\cdot\overline{r_{xx}}}}
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">attributes &lt;-<span class="st"> </span><span class="kw">names</span>(df)[-<span class="kw">dim</span>(df)[<span class="dv">2</span>]]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">attributes &lt;-<span class="st"> </span><span class="kw">names</span>(df)[<span class="op">-</span><span class="kw">dim</span>(df)[<span class="dv">2</span>]]
 
-cfs &lt;-<span class="st"> </span>function(subset){
+cfs &lt;-<span class="st"> </span><span class="cf">function</span>(subset){
 
   n &lt;-<span class="st"> </span><span class="kw">length</span>(subset)
   f &lt;-<span class="st"> </span><span class="kw">as.simple.formula</span>(subset,<span class="st">&quot;teff&quot;</span>)
   r1 &lt;-<span class="st"> </span><span class="kw">linear.correlation</span>(f,df)
-  if (n ==<span class="st"> </span><span class="dv">1</span>) {<span class="kw">return</span>(r1[<span class="dv">1</span>,<span class="dv">1</span>])}
+  <span class="cf">if</span> (n <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {<span class="kw">return</span>(r1[<span class="dv">1</span>,<span class="dv">1</span>])}
   mask &lt;-<span class="st"> </span><span class="kw">match</span>(subset,<span class="kw">names</span>(df))
   tmp &lt;-<span class="st"> </span>df[,mask]  
   c &lt;-<span class="st"> </span><span class="kw">cor</span>(tmp)
   r2 &lt;-<span class="st"> </span>c[<span class="kw">upper.tri</span>(c)]
-  score &lt;-<span class="st">  </span>(n*<span class="kw">mean</span>(r1[,<span class="dv">1</span>]))/(<span class="kw">sqrt</span>(n+(n*(n<span class="dv">-1</span>)*<span class="kw">mean</span>(r2))))   
+  score &lt;-<span class="st">  </span>(n<span class="op">*</span><span class="kw">mean</span>(r1[,<span class="dv">1</span>]))<span class="op">/</span>(<span class="kw">sqrt</span>(n<span class="op">+</span>(n<span class="op">*</span>(n<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="kw">mean</span>(r2))))   
   <span class="kw">return</span>(score)
   }</code></pre></div>
 <p>Another choice would be the so-called consistency. It is defined as</p>
@@ -1014,21 +1008,21 @@ cfs &lt;-<span class="st"> </span>function(subset){
 <li>Repeat the cycle of adding the feature that yields the lowest prediction error ANN until no further addition improves it.</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rpart)
-subset.wrapperscore &lt;-<span class="st"> </span>function(subset){
+subset.wrapperscore &lt;-<span class="st"> </span><span class="cf">function</span>(subset){
 
   <span class="co">#k-fold cross validation</span>
   k &lt;-<span class="st"> </span><span class="dv">5</span>
   splits &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="kw">nrow</span>(df))
 
-  results =<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span>:k, function(i) {
-    test.idcs &lt;-<span class="st"> </span>(splits &gt;=<span class="st"> </span>(i -<span class="st"> </span><span class="dv">1</span>) /<span class="st"> </span>k) &amp;<span class="st"> </span>(splits &lt;<span class="st"> </span>i /<span class="st"> </span>k)
-    train.idcs &lt;-<span class="st"> </span>!test.idcs
+  results =<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>k, <span class="cf">function</span>(i) {
+    test.idcs &lt;-<span class="st"> </span>(splits <span class="op">&gt;=</span><span class="st"> </span>(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span>k) <span class="op">&amp;</span><span class="st"> </span>(splits <span class="op">&lt;</span><span class="st"> </span>i <span class="op">/</span><span class="st"> </span>k)
+    train.idcs &lt;-<span class="st"> </span><span class="op">!</span>test.idcs
     test &lt;-<span class="st"> </span>df[test.idcs, , drop=<span class="ot">FALSE</span>]
     train &lt;-<span class="st"> </span>df[train.idcs, , drop=<span class="ot">FALSE</span>]
     model &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="kw">as.simple.formula</span>(subset, <span class="st">&quot;teff&quot;</span>), train)
 <span class="co">#   model &lt;- lm(as.simple.formula(subset, &quot;teff&quot;), train)</span>
-    error.rate =<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>((test$teff-<span class="kw">predict</span>(model, test))^<span class="dv">2</span>) /<span class="st"> </span><span class="kw">nrow</span>(test))
-    <span class="kw">return</span>(-<span class="kw">log10</span>(error.rate))
+    error.rate =<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>((test<span class="op">$</span>teff<span class="op">-</span><span class="kw">predict</span>(model, test))<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>(test))
+    <span class="kw">return</span>(<span class="op">-</span><span class="kw">log10</span>(error.rate))
   })
   
   <span class="co">#print(subset)</span>
@@ -1075,7 +1069,7 @@ B &lt;-<span class="st"> </span><span class="kw">rmvnorm</span>(<span class="dv"
 
 training &lt;-<span class="st"> </span><span class="kw">rbind</span>(A,B)
 
-<span class="kw">plot</span>(A,<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">xlim=</span><span class="kw">c</span>(-<span class="dv">5</span>,<span class="dv">10</span>),<span class="dt">ylim=</span><span class="kw">c</span>(-<span class="fl">7.5</span>,<span class="fl">7.5</span>),<span class="dt">xlab=</span><span class="st">&quot;Feature #1&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Feature #2&quot;</span>)
+<span class="kw">plot</span>(A,<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">10</span>),<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">7.5</span>,<span class="fl">7.5</span>),<span class="dt">xlab=</span><span class="st">&quot;Feature #1&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Feature #2&quot;</span>)
 <span class="kw">points</span>(B,<span class="dt">pch=</span><span class="dv">15</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pca &lt;-<span class="st"> </span><span class="kw">princomp</span>(training)
@@ -1086,15 +1080,15 @@ training &lt;-<span class="st"> </span><span class="kw">rbind</span>(A,B)
 ## Proportion of Variance 0.9016568 0.09834318
 ## Cumulative Proportion  0.9016568 1.00000000</code></pre>
 <p>Let us have a look at the first eigenvector:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(pca$loadings[,<span class="dv">1</span>])</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(pca<span class="op">$</span>loadings[,<span class="dv">1</span>])</code></pre></div>
 <pre><code>## [1] -0.999988331  0.004830911</code></pre>
 <p>This means that the new feature <span class="math inline">\(F_1&#39;\)</span> is constructed as -0.9999883<span class="math inline">\(\cdot F_1\)</span> + 0.0048309 <span class="math inline">\(\cdot F_2\)</span></p>
 <p>And the second one has to be orthogonal…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;graphics&quot;</span>)
-<span class="kw">plot</span>(A,<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">xlim=</span><span class="kw">c</span>(-<span class="dv">5</span>,<span class="dv">10</span>),<span class="dt">ylim=</span><span class="kw">c</span>(-<span class="fl">7.5</span>,<span class="fl">7.5</span>),<span class="dt">xlab=</span><span class="st">&quot;Feature #1&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Feature #2&quot;</span>)
+<span class="kw">plot</span>(A,<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">10</span>),<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">7.5</span>,<span class="fl">7.5</span>),<span class="dt">xlab=</span><span class="st">&quot;Feature #1&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Feature #2&quot;</span>)
 <span class="kw">points</span>(B,<span class="dt">pch=</span><span class="dv">15</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
-<span class="kw">arrows</span>(<span class="dt">x0=</span>pca$center[<span class="dv">1</span>],<span class="dt">y0=</span>pca$center[<span class="dv">2</span>],<span class="dt">x1=</span>pca$center[<span class="dv">1</span>]+pca$sdev[<span class="dv">1</span>]*pca$loadings[<span class="dv">1</span>,<span class="dv">1</span>],<span class="dt">y1=</span>pca$center[<span class="dv">2</span>]+pca$sdev[<span class="dv">1</span>]*pca$loadings[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">col=</span><span class="st">&quot;darkgreen&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
-<span class="kw">arrows</span>(<span class="dt">x0=</span>pca$center[<span class="dv">1</span>],<span class="dt">y0=</span>pca$center[<span class="dv">2</span>],<span class="dt">x1=</span>pca$center[<span class="dv">1</span>]+pca$sdev[<span class="dv">2</span>]*pca$loadings[<span class="dv">1</span>,<span class="dv">2</span>],<span class="dt">y1=</span>pca$center[<span class="dv">2</span>]+pca$sdev[<span class="dv">2</span>]*pca$loadings[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">col=</span><span class="st">&quot;darkgreen&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre></div>
+<span class="kw">arrows</span>(<span class="dt">x0=</span>pca<span class="op">$</span>center[<span class="dv">1</span>],<span class="dt">y0=</span>pca<span class="op">$</span>center[<span class="dv">2</span>],<span class="dt">x1=</span>pca<span class="op">$</span>center[<span class="dv">1</span>]<span class="op">+</span>pca<span class="op">$</span>sdev[<span class="dv">1</span>]<span class="op">*</span>pca<span class="op">$</span>loadings[<span class="dv">1</span>,<span class="dv">1</span>],<span class="dt">y1=</span>pca<span class="op">$</span>center[<span class="dv">2</span>]<span class="op">+</span>pca<span class="op">$</span>sdev[<span class="dv">1</span>]<span class="op">*</span>pca<span class="op">$</span>loadings[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">col=</span><span class="st">&quot;darkgreen&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">arrows</span>(<span class="dt">x0=</span>pca<span class="op">$</span>center[<span class="dv">1</span>],<span class="dt">y0=</span>pca<span class="op">$</span>center[<span class="dv">2</span>],<span class="dt">x1=</span>pca<span class="op">$</span>center[<span class="dv">1</span>]<span class="op">+</span>pca<span class="op">$</span>sdev[<span class="dv">2</span>]<span class="op">*</span>pca<span class="op">$</span>loadings[<span class="dv">1</span>,<span class="dv">2</span>],<span class="dt">y1=</span>pca<span class="op">$</span>center[<span class="dv">2</span>]<span class="op">+</span>pca<span class="op">$</span>sdev[<span class="dv">2</span>]<span class="op">*</span>pca<span class="op">$</span>loadings[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">col=</span><span class="st">&quot;darkgreen&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-34-1.png" width="672" /> Now, for the second example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(<span class="st">&quot;mvtnorm&quot;</span>)
 A &lt;-<span class="st"> </span><span class="kw">rmvnorm</span>(<span class="dv">1000</span>,<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>),<span class="dv">2</span>,<span class="dv">2</span>))
@@ -1102,7 +1096,7 @@ B &lt;-<span class="st"> </span><span class="kw">rmvnorm</span>(<span class="dv"
 
 training &lt;-<span class="st"> </span><span class="kw">rbind</span>(A,B)
 
-<span class="kw">plot</span>(A,<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">xlim=</span><span class="kw">c</span>(-<span class="dv">8</span>,<span class="dv">8</span>),<span class="dt">ylim=</span><span class="kw">c</span>(-<span class="dv">5</span>,<span class="fl">7.5</span>),<span class="dt">xlab=</span><span class="st">&quot;Feature #1&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Feature #2&quot;</span>)
+<span class="kw">plot</span>(A,<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">8</span>,<span class="dv">8</span>),<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>,<span class="fl">7.5</span>),<span class="dt">xlab=</span><span class="st">&quot;Feature #1&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Feature #2&quot;</span>)
 <span class="kw">points</span>(B,<span class="dt">pch=</span><span class="dv">15</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pca &lt;-<span class="st"> </span><span class="kw">princomp</span>(training)
@@ -1113,16 +1107,16 @@ training &lt;-<span class="st"> </span><span class="kw">rbind</span>(A,B)
 ## Proportion of Variance 0.7513316 0.2486684
 ## Cumulative Proportion  0.7513316 1.0000000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
-knit_hooks$<span class="kw">set</span>(<span class="dt">webgl =</span> hook_webgl)
+knit_hooks<span class="op">$</span><span class="kw">set</span>(<span class="dt">webgl =</span> hook_webgl)
 
-df2 &lt;-<span class="st"> </span>df[,-<span class="kw">dim</span>(df)[<span class="dv">2</span>]]
-df2 &lt;-<span class="st"> </span>df2[,<span class="dv">1</span>:<span class="dv">1000</span>]
+df2 &lt;-<span class="st"> </span>df[,<span class="op">-</span><span class="kw">dim</span>(df)[<span class="dv">2</span>]]
+df2 &lt;-<span class="st"> </span>df2[,<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>]
 pca &lt;-<span class="st"> </span><span class="kw">princomp</span>(df2)
 <span class="kw">library</span>(rgl)
 pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="dt">space=</span><span class="st">&quot;rgb&quot;</span>)
 col &lt;-<span class="st"> </span><span class="kw">SetupPalette</span>(df[,<span class="dv">1062</span>])
-pch=<span class="fl">0.6</span>+(StPa[,<span class="dv">2</span>]+<span class="dv">1</span>)/<span class="dv">6</span>
-<span class="kw">plot3d</span>(pca$scores[,<span class="dv">1</span>],pca$scores[,<span class="dv">2</span>],pca$scores[,<span class="dv">3</span>],<span class="dt">col=</span>col,<span class="dt">size=</span>pch,<span class="dt">ty=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
+pch=<span class="fl">0.6</span><span class="op">+</span>(StPa[,<span class="dv">2</span>]<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">6</span>
+<span class="kw">plot3d</span>(pca<span class="op">$</span>scores[,<span class="dv">1</span>],pca<span class="op">$</span>scores[,<span class="dv">2</span>],pca<span class="op">$</span>scores[,<span class="dv">3</span>],<span class="dt">col=</span>col,<span class="dt">size=</span>pch,<span class="dt">ty=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Warning in par3d(userMatrix = structure(c(1, 0, 0, 0, 0,
 ## 0.342020143325668, : font family &quot;sans&quot; not found, using &quot;bitmap&quot;</code></pre>
 <script>/*
@@ -4343,36 +4337,36 @@ p(X,Y) = p(X)p(Y|X) = p(Y)p(Y|X)
 
 <span class="kw">set.seed</span>(<span class="dv">10</span>)
 
-df2 &lt;-<span class="st"> </span>df[,-<span class="kw">dim</span>(df)[<span class="dv">2</span>]]
-df2 &lt;-<span class="st"> </span>df2[,<span class="dv">1</span>:<span class="dv">1000</span>]
+df2 &lt;-<span class="st"> </span>df[,<span class="op">-</span><span class="kw">dim</span>(df)[<span class="dv">2</span>]]
+df2 &lt;-<span class="st"> </span>df2[,<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>]
 means &lt;-<span class="st"> </span><span class="kw">apply</span>(df2,<span class="dv">1</span>,mean)
-df2 &lt;-<span class="st"> </span>df2 -<span class="st"> </span>means
+df2 &lt;-<span class="st"> </span>df2 <span class="op">-</span><span class="st"> </span>means
 sds &lt;-<span class="st"> </span><span class="kw">apply</span>(df2,<span class="dv">1</span>,sd)
-df2 &lt;-<span class="st"> </span>df2/sds
+df2 &lt;-<span class="st"> </span>df2<span class="op">/</span>sds
 
 <span class="co">#ica &lt;- icaimax(t(df2),10,alg=&quot;gradient&quot;,</span>
 <span class="co">#               fun=&quot;exp&quot;,tol=1.0e-4)</span>
 ica &lt;-<span class="st"> </span><span class="kw">icajade</span>(<span class="kw">t</span>(df2),<span class="dv">10</span>,<span class="dt">tol=</span><span class="fl">1.0e-4</span>)
-ica$S[,<span class="dv">1</span>] &lt;-<span class="st"> </span>-<span class="dv">1</span>*ica$S[,<span class="dv">1</span>]
-ica$S[,<span class="dv">2</span>] &lt;-<span class="st"> </span>-<span class="dv">1</span>*ica$S[,<span class="dv">2</span>]
+ica<span class="op">$</span>S[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">1</span><span class="op">*</span>ica<span class="op">$</span>S[,<span class="dv">1</span>]
+ica<span class="op">$</span>S[,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">1</span><span class="op">*</span>ica<span class="op">$</span>S[,<span class="dv">2</span>]
 <span class="co">#ica$S[,3] &lt;- -1*ica$S[,3]</span>
 <span class="co">#ica$S[,4] &lt;- -1*ica$S[,4]</span>
 <span class="co">#ica$S[,5] &lt;- -1*ica$S[,5]</span>
 <span class="co">#ica$S[,6] &lt;- -1*ica$S[,6]</span>
-ica$S[,<span class="dv">7</span>] &lt;-<span class="st"> </span>-<span class="dv">1</span>*ica$S[,<span class="dv">7</span>]
-ica$S[,<span class="dv">8</span>] &lt;-<span class="st"> </span>-<span class="dv">1</span>*ica$S[,<span class="dv">8</span>]
-ica$S[,<span class="dv">9</span>] &lt;-<span class="st"> </span>-<span class="dv">1</span>*ica$S[,<span class="dv">9</span>]
-ica$S[,<span class="dv">10</span>] &lt;-<span class="st"> </span>-<span class="dv">1</span>*ica$S[,<span class="dv">10</span>]
+ica<span class="op">$</span>S[,<span class="dv">7</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">1</span><span class="op">*</span>ica<span class="op">$</span>S[,<span class="dv">7</span>]
+ica<span class="op">$</span>S[,<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">1</span><span class="op">*</span>ica<span class="op">$</span>S[,<span class="dv">8</span>]
+ica<span class="op">$</span>S[,<span class="dv">9</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">1</span><span class="op">*</span>ica<span class="op">$</span>S[,<span class="dv">9</span>]
+ica<span class="op">$</span>S[,<span class="dv">10</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">1</span><span class="op">*</span>ica<span class="op">$</span>S[,<span class="dv">10</span>]
 
-for (j in <span class="dv">1</span>:<span class="dv">10</span>){
-<span class="kw">plot</span>(wv[<span class="dv">1</span>:<span class="dv">1000</span>],df2[<span class="dv">1</span>,<span class="dv">1</span>:<span class="dv">1000</span>],<span class="dt">ty=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(-<span class="dv">7</span>,<span class="dv">3</span>),<span class="dt">col=</span><span class="kw">alpha</span>(<span class="st">&quot;black&quot;</span>,<span class="fl">0.01</span>))
-sample &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">dim</span>(df2)[<span class="dv">1</span>],<span class="dv">1000</span>)
-for (i in <span class="dv">1</span>:<span class="dv">1000</span>)
+<span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>){
+<span class="kw">plot</span>(wv[<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>],df2[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>],<span class="dt">ty=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">7</span>,<span class="dv">3</span>),<span class="dt">col=</span><span class="kw">alpha</span>(<span class="st">&quot;black&quot;</span>,<span class="fl">0.01</span>))
+sample &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(df2)[<span class="dv">1</span>],<span class="dv">1000</span>)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>)
 {
-<span class="kw">lines</span>(wv[<span class="dv">1</span>:<span class="dv">1000</span>],df2[sample[i],<span class="dv">1</span>:<span class="dv">1000</span>],<span class="dt">col=</span><span class="kw">alpha</span>(<span class="st">&quot;black&quot;</span>,<span class="fl">0.01</span>))  
+<span class="kw">lines</span>(wv[<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>],df2[sample[i],<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>],<span class="dt">col=</span><span class="kw">alpha</span>(<span class="st">&quot;black&quot;</span>,<span class="fl">0.01</span>))  
 }
 
-<span class="kw">lines</span>(wv[<span class="dv">1</span>:<span class="dv">1000</span>],ica$S[,j],<span class="dt">col=</span><span class="kw">alpha</span>(<span class="st">&quot;red&quot;</span>,<span class="fl">0.2</span>),<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">lines</span>(wv[<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>],ica<span class="op">$</span>S[,j],<span class="dt">col=</span><span class="kw">alpha</span>(<span class="st">&quot;red&quot;</span>,<span class="fl">0.2</span>),<span class="dt">lwd=</span><span class="dv">3</span>)
 }</code></pre></div>
 <p><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-1.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-2.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-3.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-4.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-5.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-6.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-7.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-8.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-9.png" width="672" /><img src="AFeatureExtractionSelection_files/figure-html/unnamed-chunk-37-10.png" width="672" /></p>
 </div>
@@ -4409,14 +4403,14 @@ y_i = \sum_{j\in\epsilon_i} w_{ij}y_j
 </ol>
 <p>These low-dimensional coordinates are then returned.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
-knit_hooks$<span class="kw">set</span>(<span class="dt">webgl =</span> hook_webgl)
+knit_hooks<span class="op">$</span><span class="kw">set</span>(<span class="dt">webgl =</span> hook_webgl)
 
 <span class="kw">library</span>(lle)</code></pre></div>
 <pre><code>## Loading required package: scatterplot3d</code></pre>
 <pre><code>## Loading required package: MASS</code></pre>
 <pre><code>## Loading required package: snowfall</code></pre>
 <pre><code>## Loading required package: snow</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df2 &lt;-<span class="st"> </span>df[,-<span class="kw">dim</span>(df)[<span class="dv">2</span>]]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df2 &lt;-<span class="st"> </span>df[,<span class="op">-</span><span class="kw">dim</span>(df)[<span class="dv">2</span>]]
 <span class="co">#k = calc_k(df2,m=25)</span>
 <span class="co">#lle &lt;- lle(df2,m=10,k=12)</span>
 lle &lt;-<span class="st"> </span><span class="kw">lle</span>(df2,<span class="dt">m=</span><span class="dv">10</span>,<span class="dt">k=</span><span class="dv">50</span>)</code></pre></div>
@@ -4426,8 +4420,8 @@ lle &lt;-<span class="st"> </span><span class="kw">lle</span>(df2,<span class="d
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgl)
 pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="dt">space=</span><span class="st">&quot;rgb&quot;</span>)
 col &lt;-<span class="st"> </span><span class="kw">SetupPalette</span>(df[,<span class="dv">1062</span>])
-pch=<span class="fl">0.6</span>+(StPa[,<span class="dv">2</span>]+<span class="dv">1</span>)/<span class="dv">6</span>
-<span class="kw">plot3d</span>(lle$Y[,<span class="dv">1</span>],lle$Y[,<span class="dv">2</span>],lle$Y[,<span class="dv">3</span>],<span class="dt">col=</span>col,<span class="dt">size=</span>pch,<span class="dt">ty=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
+pch=<span class="fl">0.6</span><span class="op">+</span>(StPa[,<span class="dv">2</span>]<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">6</span>
+<span class="kw">plot3d</span>(lle<span class="op">$</span>Y[,<span class="dv">1</span>],lle<span class="op">$</span>Y[,<span class="dv">2</span>],lle<span class="op">$</span>Y[,<span class="dv">3</span>],<span class="dt">col=</span>col,<span class="dt">size=</span>pch,<span class="dt">ty=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Warning in par3d(userMatrix = structure(c(1, 0, 0, 0, 0,
 ## 0.342020143325668, : font family &quot;sans&quot; not found, using &quot;bitmap&quot;</code></pre>
 <div id="unnamed_chunk_38div" class="rglWebGL">
@@ -4472,7 +4466,7 @@ You must enable Javascript to view this page properly.
 <p>Given that <span class="math inline">\(\mathbb{S}\)</span> is row normalized, it has a trivial eigenvector <span class="math inline">\(\mathbb{1}\)</span> with eigenvalue 1. Therefore, <span class="math inline">\(\mathbb{L}\)</span> has an eigenvector <span class="math inline">\(\mathbb{1}\)</span> with eigenvalue 0. Since all other eigenvectors have to be orthogonal to <span class="math inline">\(\mathbb{1}\)</span> they will have to include positive and negative entries. This is key for something we will discuss tomorrow in the context of Spectral Clustering.</p>
 <p>In R, we have the diffusionMap package (coded by an astrophysicist) which computes <span class="math inline">\(S\)</span> using the Gaussian kernel.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;diffusionMap&quot;</span>)
-knit_hooks$<span class="kw">set</span>(<span class="dt">webgl =</span> hook_webgl)
+knit_hooks<span class="op">$</span><span class="kw">set</span>(<span class="dt">webgl =</span> hook_webgl)
 
 dists &lt;-<span class="st"> </span><span class="kw">dist</span>(df2)
 clusters &lt;-<span class="st"> </span><span class="kw">diffuse</span>(dists, 
@@ -4481,15 +4475,15 @@ clusters &lt;-<span class="st"> </span><span class="kw">diffuse</span>(dists,
         <span class="dt">neigen =</span> <span class="ot">NULL</span>, <span class="co"># the target space dimensionality: default is 95% drop in eigenvalue  </span>
         <span class="dt">t =</span> <span class="dv">0</span>, <span class="co"># Number of andom walk steps before actually calculating eigenvectors</span>
         <span class="dt">maxdim =</span> <span class="dv">50</span>, 
-        <span class="dt">delta=</span><span class="dv">10</span>^-<span class="dv">5</span>) <span class="co"># Set lower values to zero to speed up calculations</span></code></pre></div>
+        <span class="dt">delta=</span><span class="dv">10</span><span class="op">^-</span><span class="dv">5</span>) <span class="co"># Set lower values to zero to speed up calculations</span></code></pre></div>
 <pre><code>## Performing eigendecomposition
 ## Computing Diffusion Coordinates
 ## Used default value: 5 dimensions
 ## Elapsed time: 1.4 seconds</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="dt">space=</span><span class="st">&quot;rgb&quot;</span>)
 col &lt;-<span class="st"> </span><span class="kw">SetupPalette</span>(df[,<span class="dv">1062</span>])
-pch=<span class="fl">0.6</span>+(StPa[,<span class="dv">2</span>]+<span class="dv">1</span>)/<span class="dv">6</span>
-<span class="kw">plot3d</span>(clusters$X[,<span class="dv">1</span>],clusters$X[,<span class="dv">2</span>],clusters$X[,<span class="dv">3</span>],<span class="dt">col=</span>col,<span class="dt">size=</span>pch,<span class="dt">ty=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
+pch=<span class="fl">0.6</span><span class="op">+</span>(StPa[,<span class="dv">2</span>]<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">6</span>
+<span class="kw">plot3d</span>(clusters<span class="op">$</span>X[,<span class="dv">1</span>],clusters<span class="op">$</span>X[,<span class="dv">2</span>],clusters<span class="op">$</span>X[,<span class="dv">3</span>],<span class="dt">col=</span>col,<span class="dt">size=</span>pch,<span class="dt">ty=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Warning in par3d(userMatrix = structure(c(1, 0, 0, 0, 0,
 ## 0.342020143325668, : font family &quot;sans&quot; not found, using &quot;bitmap&quot;</code></pre>
 <div id="unnamed_chunk_39div" class="rglWebGL">

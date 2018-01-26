@@ -1,15 +1,11 @@
-name: "Machine Learning and Data Mining the Gaia Archive"
+name: "Unsupervised Classification - CEURA"
 navbar:
-  title: "Machine Learning and Data Mining the Gaia Archive"
+  title: "5 Introduction to Machine Learning: Unsupervised Classification"
   left:
     - text: "Home"
       href: index.html
-    - text: "Feature Extraction/Selection"
-      href: AFeatureExtractionSelection.html
     - text: "Unsupervised Classification"
       href: BUnsupervisedClassification.html
-    - text: "Bayesian Inference"
-      href: CBayesianInference.html
 output_dir: "."      
       
       
