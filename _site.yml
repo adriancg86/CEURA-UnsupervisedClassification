@@ -1,6 +1,6 @@
 name: "Unsupervised Classification - CEURA"
 navbar:
-  title: "5 Introduction to Machine Learning: Unsupervised Classification"
+  title: "V.6 Introduction to Machine Learning: Unsupervised Classification"
   left:
     - text: "Home"
       href: index.html

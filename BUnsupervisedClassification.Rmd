@@ -536,6 +536,28 @@ plot(data[sample,1],data[sample,4],pch=16,cex=.3, col=clusterCut)
 
 ```
 
+
+
+## Clustering evaluation measures
+
+### Connectedness
+
+![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/connectedness.jpg)
+
+### Silhouette width
+
+![](images/silhouette1.jpg)
+
+![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/silhouette2.jpg)
+
+### Dunn index
+
+![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/dunn.jpg)
+
+
+#############################################################
+
+
 ## Subspace clustering
 
 Subspace clustering starts from the hypothesis that, although the data set has been drawn from a multi-variate distribution in D dimensions (usually $\mathbb{R}^D$), each cluster lives in a linear or affine subspace of the original space. Imagine for example, a data set in 3D, where the data points lie in
@@ -668,28 +690,4 @@ The (justified) hope is that the new space of characteristics is more separable 
 
 
 ```
-
-
-## Clustering evaluation measures
-
-### Connectedness
-
-![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/connectedness.jpg)
-
-### Silhouette width
-
-![](images/silhouette1.jpg)
-
-![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/silhouette2.jpg)
-
-### Dunn index
-
-![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/dunn.jpg)
-
-
-#############################################################
-
-
-
-
 

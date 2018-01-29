@@ -303,7 +303,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">5 Introduction to Machine Learning: Unsupervised Classification</a>
+      <a class="navbar-brand" href="index.html">V.6 Introduction to Machine Learning: Unsupervised Classification</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -752,6 +752,37 @@ clusterCut &lt;-<span class="st"> </span><span class="kw">cutree</span>(clusters
 <span class="kw">plot</span>(data[sample,<span class="dv">1</span>],data[sample,<span class="dv">4</span>],<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">cex=</span>.<span class="dv">3</span>, <span class="dt">col=</span>clusterCut)</code></pre></div>
 <p><img src="BUnsupervisedClassification_files/figure-html/hclust-5.png" width="672" /></p>
 </div>
+<div id="clustering-evaluation-measures" class="section level2">
+<h2>Clustering evaluation measures</h2>
+<div id="connectedness" class="section level3">
+<h3>Connectedness</h3>
+<div class="figure">
+<img src="images/connectedness.jpg" alt="Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)" />
+<p class="caption">Excerpt from the R clValid [package description] (<a href="ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf" class="uri">ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf</a>)</p>
+</div>
+</div>
+<div id="silhouette-width" class="section level3">
+<h3>Silhouette width</h3>
+<div class="figure">
+<img src="images/silhouette1.jpg" />
+
+</div>
+<div class="figure">
+<img src="images/silhouette2.jpg" alt="Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)" />
+<p class="caption">Excerpt from the R clValid [package description] (<a href="ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf" class="uri">ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf</a>)</p>
+</div>
+</div>
+<div id="dunn-index" class="section level3">
+<h3>Dunn index</h3>
+<div class="figure">
+<img src="images/dunn.jpg" alt="Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)" />
+<p class="caption">Excerpt from the R clValid [package description] (<a href="ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf" class="uri">ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf</a>)</p>
+</div>
+<div id="section" class="section level61">
+<p></p>
+</div>
+</div>
+</div>
 <div id="subspace-clustering" class="section level2">
 <h2>Subspace clustering</h2>
 <p>Subspace clustering starts from the hypothesis that, although the data set has been drawn from a multi-variate distribution in D dimensions (usually <span class="math inline">\(\mathbb{R}^D\)</span>), each cluster lives in a linear or affine subspace of the original space. Imagine for example, a data set in 3D, where the data points lie in 1. two planes for clusters 1 &amp; 2 2. a line for cluster 3</p>
@@ -883,37 +914,6 @@ mask &lt;-<span class="st"> </span>cluster<span class="op">$</span>cluster<span 
 <span class="co">#cluster &lt;- specc(as.matrix(data),centers=5,kernel=&quot;rbfdot&quot;,kpar=&quot;automatic&quot;)</span>
 
 <span class="co">#plot(data[,1],data[,6],col=cluster,pch=&quot;.&quot;)</span></code></pre></div>
-</div>
-</div>
-<div id="clustering-evaluation-measures" class="section level2">
-<h2>Clustering evaluation measures</h2>
-<div id="connectedness" class="section level3">
-<h3>Connectedness</h3>
-<div class="figure">
-<img src="images/connectedness.jpg" alt="Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)" />
-<p class="caption">Excerpt from the R clValid [package description] (<a href="ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf" class="uri">ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf</a>)</p>
-</div>
-</div>
-<div id="silhouette-width" class="section level3">
-<h3>Silhouette width</h3>
-<div class="figure">
-<img src="images/silhouette1.jpg" />
-
-</div>
-<div class="figure">
-<img src="images/silhouette2.jpg" alt="Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)" />
-<p class="caption">Excerpt from the R clValid [package description] (<a href="ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf" class="uri">ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf</a>)</p>
-</div>
-</div>
-<div id="dunn-index" class="section level3">
-<h3>Dunn index</h3>
-<div class="figure">
-<img src="images/dunn.jpg" alt="Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)" />
-<p class="caption">Excerpt from the R clValid [package description] (<a href="ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf" class="uri">ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf</a>)</p>
-</div>
-<div id="section" class="section level61">
-<p></p>
-</div>
 </div>
 </div>
 
