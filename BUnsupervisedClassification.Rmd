@@ -162,15 +162,21 @@ attach(data)
 plot(logP,WI,pch=".")
 ```
 
-The data set corresponds to the **OGLE III** survey of **periodic** variable stars in the *Large Magellanic Cloud*, and the plot above shows only two of the 5 attributes that describe each source:
+The data set corresponds to the **OGLE III** survey of **periodic** variable stars in the *Large Magellanic Cloud*, and the plot above shows only two of the 6 attributes that describe each source:
+
 1. the logarithm of the period of each cycle
+
 2. the logarithm of the first Fourier term amplitude 
+
 3. the ratio of amplitudes of the first two Fourier terms
+
 4. the phase difference between the first two Fourier terms
+
 5. the V-I colour index
+
 6. the (reddening free) Wessenheit index
 
-The 5 attributes have been re-scaled between 0 and 1.
+The 6 attributes have been re-scaled between 0 and 1.
 
 The educated eye sees the classical pulsators, some extrinsic variability, and spurious structure. 
 
@@ -281,7 +287,7 @@ points(km$centers,pch=15,col="orange")
 
 Not bad, but it clearly can be improved. We see that the distance threshold is a reasonable approach, but returns clusters of roughly the same area (not true for more than three clusters). Hence the inappropriate cluster assignments.
 
-Let me now propose a different algorithm based on the concepts introduced yesterday by René. Remember that René introduced the concept of generative model for supervised learning. It naturally lead him to define the probability of the data given the model parameters, the so-called likelihood. 
+Let me now propose a different algorithm based on the concept of generative model. It naturally leads us to define the probability of the data given the model parameters, the so-called likelihood. 
 
 Since we know the true model underlying our data set, let us write down a log-likelihood function that **would** tell us what model parameters maximize the probability of our data set given the model. 
 

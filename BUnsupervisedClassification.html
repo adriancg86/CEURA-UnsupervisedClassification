@@ -439,8 +439,16 @@ means &lt;-<span class="st"> </span><span class="kw">M</span>(mock.data,cluster)
 
 <span class="kw">plot</span>(logP,WI,<span class="dt">pch=</span><span class="st">&quot;.&quot;</span>)</code></pre></div>
 <p><img src="BUnsupervisedClassification_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>The data set corresponds to the <strong>OGLE III</strong> survey of <strong>periodic</strong> variable stars in the <em>Large Magellanic Cloud</em>, and the plot above shows only two of the 5 attributes that describe each source: 1. the logarithm of the period of each cycle 2. the logarithm of the first Fourier term amplitude 3. the ratio of amplitudes of the first two Fourier terms 4. the phase difference between the first two Fourier terms 5. the V-I colour index 6. the (reddening free) Wessenheit index</p>
-<p>The 5 attributes have been re-scaled between 0 and 1.</p>
+<p>The data set corresponds to the <strong>OGLE III</strong> survey of <strong>periodic</strong> variable stars in the <em>Large Magellanic Cloud</em>, and the plot above shows only two of the 6 attributes that describe each source:</p>
+<ol style="list-style-type: decimal">
+<li><p>the logarithm of the period of each cycle</p></li>
+<li><p>the logarithm of the first Fourier term amplitude</p></li>
+<li><p>the ratio of amplitudes of the first two Fourier terms</p></li>
+<li><p>the phase difference between the first two Fourier terms</p></li>
+<li><p>the V-I colour index</p></li>
+<li><p>the (reddening free) Wessenheit index</p></li>
+</ol>
+<p>The 6 attributes have been re-scaled between 0 and 1.</p>
 <p>The educated eye sees the classical pulsators, some extrinsic variability, and spurious structure.</p>
 <p>Unfortunately, the spurious structure overlaps with true variability (like, for example, <span class="math inline">\(\gamma\)</span> Doradus stars and Slowly Pulsating B-type variables that can have periods around 1 day). Therefore, careless cleaning (as the one practitioned below) is just wrong.</p>
 <p>The <a href="https://arxiv.org/pdf/0712.3797.pdf">variability zoo</a> is beyond the scope of this lectures, so you will have to have faith and believe me.</p>
@@ -506,7 +514,7 @@ mock.data &lt;-<span class="st"> </span><span class="kw">rbind</span>(setA,setB,
 <span class="kw">points</span>(km<span class="op">$</span>centers,<span class="dt">pch=</span><span class="dv">15</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>)</code></pre></div>
 <p><img src="BUnsupervisedClassification_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Not bad, but it clearly can be improved. We see that the distance threshold is a reasonable approach, but returns clusters of roughly the same area (not true for more than three clusters). Hence the inappropriate cluster assignments.</p>
-<p>Let me now propose a different algorithm based on the concepts introduced yesterday by René. Remember that René introduced the concept of generative model for supervised learning. It naturally lead him to define the probability of the data given the model parameters, the so-called likelihood.</p>
+<p>Let me now propose a different algorithm based on the concept of generative model. It naturally leads us to define the probability of the data given the model parameters, the so-called likelihood.</p>
 <p>Since we know the true model underlying our data set, let us write down a log-likelihood function that <strong>would</strong> tell us what model parameters maximize the probability of our data set given the model.</p>
 <p><span class="math display">\[\mathcal{N}(\vec{x})=\frac{1}{(2\pi)^{k/2}}\frac{1}{\Sigma^{1/2}}\cdot e^{-\frac{1}{2}((\vec{x}-\vec{\mu})^T\Sigma^{-1}(\vec{x}-\vec{\mu}))}\]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">loglikNormal &lt;-<span class="st"> </span><span class="cf">function</span>(D,means,Sigmas,cluster){
