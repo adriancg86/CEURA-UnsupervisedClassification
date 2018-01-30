@@ -633,15 +633,21 @@ cluster &lt;-<span class="st"> </span>cluster.new
 </div>
 <div id="density-based-clustering" class="section level2">
 <h2>Density based clustering</h2>
+<div id="dbscan" class="section level3">
+<h3>DBSCAN</h3>
 <ul>
-<li>Un punto <span class="math inline">\(p\)</span> es un punto núcleo si al menos <span class="math inline">\(minPts\)</span> puntos están a una distancia <span class="math inline">\(\epsilon\)</span> de él.</li>
-<li>Un punto <span class="math inline">\(q\)</span> se dice directamente alcanzable desde el punto núcleo <span class="math inline">\(p\)</span> si está a una distancia menor que <span class="math inline">\(\epsilon\)</span> de <span class="math inline">\(p\)</span>. Si existen más de <span class="math inline">\(minPts\)</span> en un entorno <span class="math inline">\(\epsilon\)</span> de <span class="math inline">\(p\)</span>, decimos que esos puntos son directamente alcanzables desde <span class="math inline">\(p\)</span>. Por definición, no es posible tener puntos directamente alcanzables desde un punto que no sea un núcleo.</li>
-<li>Un punto <span class="math inline">\(q\)</span> es alcanzable desde <span class="math inline">\(p\)</span> si existe una secuencia de puntos <span class="math inline">\(p_1,p_2,...,p_n\)</span> donde <span class="math inline">\(p=p_1\)</span> y <span class="math inline">\(p_n = q\)</span> tal que cada punto <span class="math inline">\(p_{i+1}\)</span> es directamente alcanzable desde <span class="math inline">\(p_i\)</span>; es decir, todos los puntos de la secuencia deben ser puntos núcleos, con la posible excepción de q {q} q.</li>
-<li>Un punto que no sea alcanzable desde cualquier otro punto es considerado ruido.</li>
-<li>Si <span class="math inline">\(p\)</span> es un punto núcleo, éste forma un cluster junto a otros puntos (núcleo o no) que sean alcanzables desde él. Cada cluster contiene al menos un punto núcleo. Los puntos que no sean puntos núcleo alcanzables pueden pertenecer a un cluster pero actúan como una barrera puesto que no es posible alcanzar más puntos desde estos.</li>
-<li>La relación ser alcanzable no es simétrica.</li>
-<li>Última definición necesaria: conectividad. Dos puntos <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span> están conectados densamente si existe un punto <span class="math inline">\(o\)</span> tal que ambos <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span> sean directamente alcanzables desde <span class="math inline">\(o\)</span>. La relación estar densamente conectado es simétrica. *Un clúster en DBSCAN, satisface dos propiedades: <strong> Todos los puntos del clúster están densamente conectados entre sí. </strong> Si un punto A es directamente alcanzable desde cualquier otro punto B del clúster, entonces A también forma parte del clúster.</li>
+<li>A point <span class="math inline">\(p\)</span> is a core point is there are at least <span class="math inline">\(minPts\)</span> inside an <span class="math inline">\(\epsilon\)</span>-ball centred in it.</li>
+<li>A point <span class="math inline">\(q\)</span> is said to be directly reachable from core point <span class="math inline">\(p\)</span> if it is at a distance <span class="math inline">\(d&lt;\epsilon\)</span>. Hence, all points inside the <span class="math inline">\(\epsilon\)</span>-ball of the core point <span class="math inline">\(p\)</span> are directly reachable from <span class="math inline">\(p\)</span>. By definition, no other point is directly reachable from a non-core point.</li>
+<li>A point <span class="math inline">\(q\)</span> is reachable from <span class="math inline">\(p\)</span> if there exists a sequence of points <span class="math inline">\(p_1,p_2,...,p_n\)</span> where <span class="math inline">\(p=p_1\)</span> y <span class="math inline">\(p_n = q\)</span> such that all<br />
+<span class="math inline">\(p_{i+1}\)</span> are directly reachable from <span class="math inline">\(p_i\)</span>; this definition implies that<br />
+all points in the sequence have to be core points except possibly <span class="math inline">\(q\)</span>.</li>
+<li>A point that is not reachable from any other point is said to be noise.</li>
+<li>If <span class="math inline">\(p\)</span> is a core point, ir constitutes a cluster together with all other points (core or non-core) that are reachable from it. Every cluster must contain at least one core point and can contain non-core points that constitute the cluster boundary (because no other point can be reached from it).</li>
+<li>The reachability relationship is not symmetric.</li>
+<li>Two points are said to be density-connected if there exists a point <span class="math inline">\(o\)</span> such that both <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are reachable from <span class="math inline">\(o\)</span>. The ‘density-connectedness’ relationship is symmetric.</li>
+<li>A cluster in DBSCAN satifies the following two properties: ** All points in the cluster are density-connected. ** If a point is density-connected to any point in the cluster, then it is also part of the cluster.</li>
 </ul>
+<p>Here is the pseudo-code:</p>
 <pre><code>DBSCAN(DB, dist, eps, minPts) {
    C = 0                                              /* Cluster counter */
    for each point P in database DB {
@@ -723,6 +729,7 @@ column &lt;-<span class="st"> </span><span class="dv">6</span>
 
 </div>
 </div>
+</div>
 <div id="kohonen" class="section level2">
 <h2>Kohonen</h2>
 <p>Scheme:</p>
@@ -760,7 +767,16 @@ cluster &lt;-<span class="st"> </span><span class="kw">som</span>(mock.data)
 </div>
 <div id="hierarchical-agglomerative-connectivity-based-clustering" class="section level2">
 <h2>Hierarchical agglomerative (connectivity based) clustering</h2>
-<p>Start with one cluster per data point, and iteratively merge at each steps the two clusters that are ‘closer’ together, with distance between clusters measured as: * <strong>single-linkage</strong> the minimum distance amongst all pairs of points that we can define with one in cluster <span class="math inline">\(C_i\)</span> and another in cluster <span class="math inline">\(C_j\)</span> * <strong>average linkage</strong> the average distance amongst all pairs of points… * <strong>complete linkage</strong> the maximum distance for all pairs… * <strong>centroid linkage</strong> the distance between the centre of mass of each clusters, or the data point closer to it. * <strong>minimum energy linkage</strong> similar to the average linkage but a penalization term that include the intra-cluster variances for <span class="math inline">\(C_i\)</span> and <span class="math inline">\(C_j\)</span> * <strong>wards metric</strong>: merge the two clusters that yield the smallest increase in the total intracluster variance.</p>
+<p>Start with one cluster per data point, and iteratively merge at each step the two clusters that are ‘closer’ together, with distance between clusters<br />
+measured as:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>single-linkage</strong> the minimum distance amongst all pairs of points that we can define with one in cluster <span class="math inline">\(C_i\)</span> and another in cluster <span class="math inline">\(C_j\)</span></p></li>
+<li><p><strong>average linkage</strong> the average distance amongst all pairs of points.</p></li>
+<li><p><strong>complete linkage</strong> the maximum distance for all pairs.</p></li>
+<li><p><strong>centroid linkage</strong> the distance between the centre of mass of each cluster, or the data point closer to it.</p></li>
+<li><p><strong>minimum energy linkage</strong> similar to the average linkage but a penalization term that includes the intra-cluster variances for <span class="math inline">\(C_i\)</span> and <span class="math inline">\(C_j\)</span></p></li>
+<li><p><strong>wards metric</strong>: merge the two clusters that yield the smallest increase in the total intracluster variance.</p></li>
+</ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">dim</span>(data)[<span class="dv">1</span>],<span class="dv">10000</span>)
 dists &lt;-<span class="st"> </span><span class="kw">dist</span>(data[sample,])
 <span class="co">#dists &lt;- dist(data)</span>

@@ -420,33 +420,31 @@ if(ndiff==0) break
 
 ## Density based clustering
 
-* Un punto $p$ es un punto núcleo si al menos $minPts$ puntos están a
-una distancia $\epsilon$ de él. 
-* Un punto $q$ se dice directamente alcanzable desde el punto núcleo $p$ si 
-está a una distancia menor que $\epsilon$ de $p$. Si existen más de 
-$minPts$ en un entorno $\epsilon$ de $p$, decimos que esos puntos son 
-directamente alcanzables desde $p$. Por definición, no es posible tener puntos 
-directamente alcanzables desde un punto que no sea un núcleo.
-* Un punto $q$ es alcanzable desde $p$ si existe una secuencia de
-puntos $p_1,p_2,...,p_n$ donde $p=p_1$ y $p_n = q$ tal que cada 
-punto $p_{i+1}$ es directamente alcanzable desde $p_i$; es 
-decir, todos los puntos de la secuencia deben ser puntos núcleos, con 
-la posible excepción de q {\displaystyle q} q.
-* Un punto que no sea alcanzable desde cualquier otro punto es 
-considerado ruido.
-* Si $p$ es un punto núcleo, éste forma un cluster junto a otros puntos
-(núcleo o no) que sean alcanzables desde él. Cada cluster contiene al 
-menos un punto núcleo. Los puntos que no sean puntos núcleo alcanzables 
-pueden pertenecer a un cluster pero actúan como una barrera puesto que 
-no es posible alcanzar más puntos desde estos.
-* La relación ser alcanzable no es simétrica. 
-* Última definición necesaria: conectividad. Dos puntos $p$
- y $q$ están conectados densamente si existe un punto $o$ tal que ambos $p$
- y $q$ sean directamente alcanzables desde $o$. La relación estar densamente
- conectado es simétrica.
-*Un clúster en DBSCAN, satisface dos propiedades:
-** Todos los puntos del clúster están densamente conectados entre sí.
-** Si un punto A es directamente alcanzable desde cualquier otro punto B del clúster, entonces A también forma parte del clúster.
+### DBSCAN
+
+* A point $p$ is a core point is there are at least $minPts$ inside an $\epsilon$-ball centred in it. 
+* A point $q$ is said to be directly reachable from core point $p$ if it is at 
+a distance $d<\epsilon$. Hence, all points inside the $\epsilon$-ball of the 
+core point $p$ are directly reachable from $p$. By definition, no other point 
+is directly reachable from a non-core point. 
+* A point $q$ is reachable from $p$ if there exists a sequence of points 
+$p_1,p_2,...,p_n$ where $p=p_1$ y $p_n = q$ such that all  
+$p_{i+1}$ are directly reachable from $p_i$; this definition implies that  
+all points in the sequence have to be core points except possibly $q$.
+* A point that is not reachable from any other point is said to be noise.
+* If $p$ is a core point, ir constitutes a cluster together with all other 
+points (core or non-core) that are reachable from it. Every cluster must 
+contain at least one core point and can contain non-core points that constitute
+the cluster boundary (because no other point can be reached from it).
+* The reachability relationship is not symmetric. 
+* Two points are said to be density-connected if there exists a point $o$ such 
+that both $p$ and $q$ are reachable from $o$. The 'density-connectedness' 
+relationship is symmetric. 
+* A cluster in DBSCAN satifies the following two properties:
+** All points in the cluster are density-connected.
+** If a point is density-connected to any point in the cluster, then it is also part of the cluster.
+
+Here is the pseudo-code:
 
 ```
 DBSCAN(DB, dist, eps, minPts) {
@@ -562,13 +560,23 @@ plot(cluster, type="count")
 
 ## Hierarchical agglomerative (connectivity based) clustering
 
-Start with one cluster per data point, and iteratively merge at each steps the two clusters that are 'closer' together, with distance between clusters  measured as:
-* **single-linkage** the minimum distance amongst all pairs of points that we can define with one in cluster $C_i$ and another in cluster $C_j$
-* **average linkage** the average distance amongst all pairs of points...
-* **complete linkage** the maximum distance for all pairs...
-* **centroid linkage** the distance between the centre of mass of each clusters, or the data point closer to it.
-* **minimum energy linkage** similar to the average linkage but a penalization term that include the intra-cluster variances for $C_i$ and $C_j$
-* **wards metric**: merge the two clusters that yield the smallest increase in the total intracluster variance.
+Start with one cluster per data point, and iteratively merge at each step the 
+two clusters that are 'closer' together, with distance between clusters  
+measured as:
+
+1. **single-linkage** the minimum distance amongst all pairs of points that we 
+can define with one in cluster $C_i$ and another in cluster $C_j$
+
+2. **average linkage** the average distance amongst all pairs of points.
+
+3. **complete linkage** the maximum distance for all pairs.
+
+4. **centroid linkage** the distance between the centre of mass of each 
+cluster, or the data point closer to it.
+
+5. **minimum energy linkage** similar to the average linkage but a penalization term that includes the intra-cluster variances for $C_i$ and $C_j$
+
+6. **wards metric**: merge the two clusters that yield the smallest increase in the total intracluster variance.
 
 ```{r cache=F, label="hclust"}
 sample <- sample(dim(data)[1],10000)
