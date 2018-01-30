@@ -342,6 +342,8 @@ div.tocify {
 </div>
 
 
+<div id="intro-basic-concepts" class="section level1">
+<h1>Intro &amp; basic concepts</h1>
 <div id="an-illustration-with-2d-synthetic-data" class="section level2">
 <h2>An illustration with 2D synthetic data</h2>
 <p>OK. Let us first play with a very simple 2D data set created by us by sampling from two identical normal (=Gaussian) distributions with centres displaced.</p>
@@ -352,8 +354,9 @@ setB &lt;-<span class="st"> </span><span class="kw">rmvnorm</span>(<span class="
 mock.data &lt;-<span class="st"> </span><span class="kw">rbind</span>(setA,setB)
 <span class="kw">plot</span>(mock.data)</code></pre></div>
 <p><img src="BUnsupervisedClassification_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<div id="the-k-means-algorithm" class="section level3">
-<h3>The k-means algorithm</h3>
+</div>
+<div id="the-k-means-algorithm" class="section level2">
+<h2>The k-means algorithm</h2>
 <p><span class="math inline">\(K\)</span>-means is a very popular and simple iterative algorithm for clustering. Let us learn its steps with the very simple 2 cluster 2D problem.</p>
 <p>We start by randomly selecting two points that we will take as starting solution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rc &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(mock.data)[<span class="dv">1</span>],<span class="dv">2</span>)
@@ -427,7 +430,6 @@ means &lt;-<span class="st"> </span><span class="kw">M</span>(mock.data,cluster)
 <span class="kw">plot</span>(mock.data,<span class="dt">col=</span>km<span class="op">$</span>cluster,<span class="dt">pch=</span><span class="dv">16</span>)
 <span class="kw">points</span>(km<span class="op">$</span>centers,<span class="dt">pch=</span><span class="dv">16</span>,<span class="dt">col=</span><span class="st">&quot;seagreen&quot;</span>,<span class="dt">cex=</span><span class="dv">2</span>)</code></pre></div>
 <p><img src="BUnsupervisedClassification_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
 </div>
 <div id="the-ogle-data-set" class="section level2">
 <h2>The OGLE data set</h2>
@@ -631,6 +633,47 @@ cluster &lt;-<span class="st"> </span>cluster.new
 </div>
 <div id="density-based-clustering" class="section level2">
 <h2>Density based clustering</h2>
+<ul>
+<li>Un punto <span class="math inline">\(p\)</span> es un punto núcleo si al menos <span class="math inline">\(minPts\)</span> puntos están a una distancia <span class="math inline">\(\epsilon\)</span> de él.</li>
+<li>Un punto <span class="math inline">\(q\)</span> se dice directamente alcanzable desde el punto núcleo <span class="math inline">\(p\)</span> si está a una distancia menor que <span class="math inline">\(\epsilon\)</span> de <span class="math inline">\(p\)</span>. Si existen más de <span class="math inline">\(minPts\)</span> en un entorno <span class="math inline">\(\epsilon\)</span> de <span class="math inline">\(p\)</span>, decimos que esos puntos son directamente alcanzables desde <span class="math inline">\(p\)</span>. Por definición, no es posible tener puntos directamente alcanzables desde un punto que no sea un núcleo.</li>
+<li>Un punto <span class="math inline">\(q\)</span> es alcanzable desde <span class="math inline">\(p\)</span> si existe una secuencia de puntos <span class="math inline">\(p_1,p_2,...,p_n\)</span> donde <span class="math inline">\(p=p_1\)</span> y <span class="math inline">\(p_n = q\)</span> tal que cada punto <span class="math inline">\(p_{i+1}\)</span> es directamente alcanzable desde <span class="math inline">\(p_i\)</span>; es decir, todos los puntos de la secuencia deben ser puntos núcleos, con la posible excepción de q {q} q.</li>
+<li>Un punto que no sea alcanzable desde cualquier otro punto es considerado ruido.</li>
+<li>Si <span class="math inline">\(p\)</span> es un punto núcleo, éste forma un cluster junto a otros puntos (núcleo o no) que sean alcanzables desde él. Cada cluster contiene al menos un punto núcleo. Los puntos que no sean puntos núcleo alcanzables pueden pertenecer a un cluster pero actúan como una barrera puesto que no es posible alcanzar más puntos desde estos.</li>
+<li>La relación ser alcanzable no es simétrica.</li>
+<li>Última definición necesaria: conectividad. Dos puntos <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span> están conectados densamente si existe un punto <span class="math inline">\(o\)</span> tal que ambos <span class="math inline">\(p\)</span> y <span class="math inline">\(q\)</span> sean directamente alcanzables desde <span class="math inline">\(o\)</span>. La relación estar densamente conectado es simétrica. *Un clúster en DBSCAN, satisface dos propiedades: <strong> Todos los puntos del clúster están densamente conectados entre sí. </strong> Si un punto A es directamente alcanzable desde cualquier otro punto B del clúster, entonces A también forma parte del clúster.</li>
+</ul>
+<pre><code>DBSCAN(DB, dist, eps, minPts) {
+   C = 0                                              /* Cluster counter */
+   for each point P in database DB {
+      if label(P) ≠ undefined then continue           /* Previously processed in inner loop */
+      Neighbors N = RangeQuery(DB, dist, P, eps)      /* Find neighbors */
+      if |N| &lt; minPts then {                          /* Density check */
+         label(P) = Noise                             /* Label as Noise */
+         continue
+      }
+      C = C + 1                                       /* next cluster label */
+      label(P) = C                                    /* Label initial point */
+      Seed set S = N \ {P}                            /* Neighbors to expand */
+      for each point Q in S {                         /* Process every seed point */
+         if label(Q) = Noise then label(Q) = C        /* Change Noise to border point */
+         if label(Q) ≠ undefined then continue        /* Previously processed */
+         label(Q) = C                                 /* Label neighbor */
+         Neighbors N = RangeQuery(DB, dist, Q, eps)   /* Find neighbors */
+         if |N| ≥ minPts then {                       /* Density check */
+            S = S ∪ N                                 /* Add new neighbors to seed set */
+         }
+      }
+   }
+}</code></pre>
+<pre><code>RangeQuery(DB, dist, Q, eps) {
+   Neighbors = empty list
+   for each point P in database DB {                  /* Scan all points in the database */
+      if dist(Q, P) ≤ eps then {                      /* Compute distance and check epsilon */
+         Neighbors = Neighbors ∪ {P}                  /* Add to result */
+      }
+   }
+   return Neighbors
+}</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;dbscan&quot;</span>)
 cluster &lt;-<span class="st"> </span><span class="kw">dbscan</span>(data[,<span class="op">-</span><span class="dv">4</span>],<span class="dt">minPts =</span> <span class="dv">5</span>, <span class="dt">eps=</span><span class="fl">0.02</span>)
 mask &lt;-<span class="st"> </span>cluster<span class="op">$</span>cluster <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>
@@ -783,6 +826,9 @@ clusterCut &lt;-<span class="st"> </span><span class="kw">cutree</span>(clusters
 </div>
 </div>
 </div>
+</div>
+<div id="advanced-techniques" class="section level1">
+<h1>Advanced techniques</h1>
 <div id="subspace-clustering" class="section level2">
 <h2>Subspace clustering</h2>
 <p>Subspace clustering starts from the hypothesis that, although the data set has been drawn from a multi-variate distribution in D dimensions (usually <span class="math inline">\(\mathbb{R}^D\)</span>), each cluster lives in a linear or affine subspace of the original space. Imagine for example, a data set in 3D, where the data points lie in 1. two planes for clusters 1 &amp; 2 2. a line for cluster 3</p>
@@ -888,23 +934,23 @@ mask &lt;-<span class="st"> </span>cluster<span class="op">$</span>cluster<span 
 <ul>
 <li>Now, once we have the graph fully specified, <strong>spectral clustering</strong> proceeds by computing the eigenvectors/eigenvalues of the Laplacian, and aplying <span class="math inline">\(k\)</span>-means to the rows of the <span class="math inline">\(U\)</span> matrix.</li>
 </ul>
-<div id="spectral-clustering-with-the-unnormalized-laplacian" class="section level3">
-<h3>Spectral clustering with the unnormalized Laplacian</h3>
+<div id="spectral-clustering-with-the-unnormalized-laplacian" class="section level4">
+<h4>Spectral clustering with the unnormalized Laplacian</h4>
 <div class="figure">
 <img src="images/unnormalized.png" alt="Excerpt from the tutorial by Ulrike von Luxburg" />
 <p class="caption">Excerpt from the <a href="http://link.springer.com/article/10.1007/s11222-007-9033-z">tutorial by Ulrike von Luxburg</a></p>
 </div>
 <p>The (justified) hope is that the new space of characteristics is more separable than the original one.</p>
 </div>
-<div id="spectral-clustering-with-the-normalized-symmetric-laplacian" class="section level3">
-<h3>Spectral clustering with the normalized symmetric Laplacian</h3>
+<div id="spectral-clustering-with-the-normalized-symmetric-laplacian" class="section level4">
+<h4>Spectral clustering with the normalized symmetric Laplacian</h4>
 <div class="figure">
 <img src="images/normalized1.png" alt="Excerpt from the tutorial by Ulrike von Luxburg" />
 <p class="caption">Excerpt from the <a href="http://link.springer.com/article/10.1007/s11222-007-9033-z">tutorial by Ulrike von Luxburg</a></p>
 </div>
 </div>
-<div id="spectral-clustering-with-the-normalized-random-walk-laplacian" class="section level3">
-<h3>Spectral clustering with the normalized random walk Laplacian</h3>
+<div id="spectral-clustering-with-the-normalized-random-walk-laplacian" class="section level4">
+<h4>Spectral clustering with the normalized random walk Laplacian</h4>
 <div class="figure">
 <img src="images/normalized2.png" alt="Excerpt from the tutorial by Ulrike von Luxburg" />
 <p class="caption">Excerpt from the <a href="http://link.springer.com/article/10.1007/s11222-007-9033-z">tutorial by Ulrike von Luxburg</a></p>
@@ -914,6 +960,7 @@ mask &lt;-<span class="st"> </span>cluster<span class="op">$</span>cluster<span 
 <span class="co">#cluster &lt;- specc(as.matrix(data),centers=5,kernel=&quot;rbfdot&quot;,kpar=&quot;automatic&quot;)</span>
 
 <span class="co">#plot(data[,1],data[,6],col=cluster,pch=&quot;.&quot;)</span></code></pre></div>
+</div>
 </div>
 </div>
 

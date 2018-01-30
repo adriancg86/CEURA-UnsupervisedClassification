@@ -17,6 +17,8 @@ knitr::opts_chunk$set(cache=TRUE)
 knitr::opts_chunk$set(unnamed.chunk.label = "B")
 ```
 
+# Intro & basic concepts
+
 ## An illustration with 2D synthetic data
 
 OK. Let us first play with a very simple 2D data set created by us by sampling from two identical normal (=Gaussian) distributions with centres displaced.
@@ -31,7 +33,7 @@ plot(mock.data)
 
 ```
 
-### The k-means algorithm
+## The k-means algorithm
 
 $K$-means is a very popular and simple iterative algorithm for clustering. Let us learn its steps with the very simple 2 cluster 2D problem.
 
@@ -418,6 +420,73 @@ if(ndiff==0) break
 
 ## Density based clustering
 
+* Un punto $p$ es un punto núcleo si al menos $minPts$ puntos están a
+una distancia $\epsilon$ de él. 
+* Un punto $q$ se dice directamente alcanzable desde el punto núcleo $p$ si 
+está a una distancia menor que $\epsilon$ de $p$. Si existen más de 
+$minPts$ en un entorno $\epsilon$ de $p$, decimos que esos puntos son 
+directamente alcanzables desde $p$. Por definición, no es posible tener puntos 
+directamente alcanzables desde un punto que no sea un núcleo.
+* Un punto $q$ es alcanzable desde $p$ si existe una secuencia de
+puntos $p_1,p_2,...,p_n$ donde $p=p_1$ y $p_n = q$ tal que cada 
+punto $p_{i+1}$ es directamente alcanzable desde $p_i$; es 
+decir, todos los puntos de la secuencia deben ser puntos núcleos, con 
+la posible excepción de q {\displaystyle q} q.
+* Un punto que no sea alcanzable desde cualquier otro punto es 
+considerado ruido.
+* Si $p$ es un punto núcleo, éste forma un cluster junto a otros puntos
+(núcleo o no) que sean alcanzables desde él. Cada cluster contiene al 
+menos un punto núcleo. Los puntos que no sean puntos núcleo alcanzables 
+pueden pertenecer a un cluster pero actúan como una barrera puesto que 
+no es posible alcanzar más puntos desde estos.
+* La relación ser alcanzable no es simétrica. 
+* Última definición necesaria: conectividad. Dos puntos $p$
+ y $q$ están conectados densamente si existe un punto $o$ tal que ambos $p$
+ y $q$ sean directamente alcanzables desde $o$. La relación estar densamente
+ conectado es simétrica.
+*Un clúster en DBSCAN, satisface dos propiedades:
+** Todos los puntos del clúster están densamente conectados entre sí.
+** Si un punto A es directamente alcanzable desde cualquier otro punto B del clúster, entonces A también forma parte del clúster.
+
+```
+DBSCAN(DB, dist, eps, minPts) {
+   C = 0                                              /* Cluster counter */
+   for each point P in database DB {
+      if label(P) ≠ undefined then continue           /* Previously processed in inner loop */
+      Neighbors N = RangeQuery(DB, dist, P, eps)      /* Find neighbors */
+      if |N| < minPts then {                          /* Density check */
+         label(P) = Noise                             /* Label as Noise */
+         continue
+      }
+      C = C + 1                                       /* next cluster label */
+      label(P) = C                                    /* Label initial point */
+      Seed set S = N \ {P}                            /* Neighbors to expand */
+      for each point Q in S {                         /* Process every seed point */
+         if label(Q) = Noise then label(Q) = C        /* Change Noise to border point */
+         if label(Q) ≠ undefined then continue        /* Previously processed */
+         label(Q) = C                                 /* Label neighbor */
+         Neighbors N = RangeQuery(DB, dist, Q, eps)   /* Find neighbors */
+         if |N| ≥ minPts then {                       /* Density check */
+            S = S ∪ N                                 /* Add new neighbors to seed set */
+         }
+      }
+   }
+}
+```
+
+```
+RangeQuery(DB, dist, Q, eps) {
+   Neighbors = empty list
+   for each point P in database DB {                  /* Scan all points in the database */
+      if dist(Q, P) ≤ eps then {                      /* Compute distance and check epsilon */
+         Neighbors = Neighbors ∪ {P}                  /* Add to result */
+      }
+   }
+   return Neighbors
+}
+```
+
+
 ```{r }
 library("dbscan")
 cluster <- dbscan(data[,-4],minPts = 5, eps=0.02)
@@ -557,6 +626,7 @@ plot(data[sample,1],data[sample,4],pch=16,cex=.3, col=clusterCut)
 
 #############################################################
 
+# Advanced techniques
 
 ## Subspace clustering
 
@@ -667,17 +737,17 @@ $A_i\cap A_j=\emptyset$ and $A_1\cup A_2\cup ... A_k=V$.
 
 * Now, once we have the graph fully specified, **spectral clustering** proceeds by computing the eigenvectors/eigenvalues of the Laplacian, and aplying $k$-means to the rows of the $U$ matrix.
 
-### Spectral clustering with the unnormalized Laplacian
+#### Spectral clustering with the unnormalized Laplacian
 
 ![Excerpt from the [tutorial by Ulrike von Luxburg](http://link.springer.com/article/10.1007/s11222-007-9033-z)](images/unnormalized.png)
 
 The (justified) hope is that the new space of characteristics is more separable than the original one. 
 
-### Spectral clustering with the normalized symmetric Laplacian
+#### Spectral clustering with the normalized symmetric Laplacian
 
 ![Excerpt from the [tutorial by Ulrike von Luxburg](http://link.springer.com/article/10.1007/s11222-007-9033-z)](images/normalized1.png)
 
-### Spectral clustering with the normalized random walk Laplacian
+#### Spectral clustering with the normalized random walk Laplacian
 
 ![Excerpt from the [tutorial by Ulrike von Luxburg](http://link.springer.com/article/10.1007/s11222-007-9033-z)](images/normalized2.png)
 
