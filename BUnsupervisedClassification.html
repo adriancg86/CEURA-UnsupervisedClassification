@@ -365,7 +365,7 @@ mock.data &lt;-<span class="st"> </span><span class="kw">rbind</span>(setA,setB)
 <p><img src="BUnsupervisedClassification_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>We will then take this two points as the centres of the two clusters. We could have tried three or more clusters.</p>
 <p>If these two points are the centres of the two clusters, each cluster will be made up of the points that are closer to each centre. Closer is a word that implies many things. In particular, it implies a distance and a metric. In the following, I will assume that the metric is Euclidean, but you have various choices (Euclidean, Manhattan, L<span class="math inline">\(_\infty\)</span>) that you should consider before applying (most) clustering algorithms.</p>
-<p>A quote from <a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/">Elements of Statistical Learning</a></p>
+<p>A quote from <a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Elements of Statistical Learning</a></p>
 <p>“An appropriate dissimilarity measure is far more important in obtaining success with clustering than choice of clustering algorithm. This aspect of the problem … depends on domain specific knowledge and is less amenable to general research.”</p>
 <p>If you decide to use the euclidean distance, take into account its definition:</p>
 <p><span class="math inline">\(d(\mathbb{x},\mathbb{y}) = \sqrt(\sum_i^n (x_i-y_i)^2)\)</span></p>
