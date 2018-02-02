@@ -847,14 +847,18 @@ clusterCut &lt;-<span class="st"> </span><span class="kw">cutree</span>(clusters
 <h1>Advanced techniques</h1>
 <div id="subspace-clustering" class="section level2">
 <h2>Subspace clustering</h2>
-<p>Subspace clustering starts from the hypothesis that, although the data set has been drawn from a multi-variate distribution in D dimensions (usually <span class="math inline">\(\mathbb{R}^D\)</span>), each cluster lives in a linear or affine subspace of the original space. Imagine for example, a data set in 3D, where the data points lie in 1. two planes for clusters 1 &amp; 2 2. a line for cluster 3</p>
+<p>Subspace clustering starts from the hypothesis that, although the data set has been drawn from a multi-variate distribution in D dimensions (usually <span class="math inline">\(\mathbb{R}^D\)</span>), each cluster lives in a linear or affine subspace of the original space. Imagine for example, a data set in 3D, where the data points lie in</p>
+<ol style="list-style-type: decimal">
+<li><p>two planes for clusters 1 &amp; 2</p></li>
+<li><p>a line for cluster 3</p></li>
+</ol>
 <p>The data set is the union of sets from each of the subspaces. The objective then is to find at the same time the cluster assignments, and the subspace definitions.</p>
 <p>In mathematical terms, each subspace is defined as</p>
 <p><span class="math display">\[
 S_i = {x \in \mathbb{R}^D: x=\mathbb{\mu}_i+U_i\cdot\mathbb{y}}
 \]</span></p>
 <p>where <span class="math inline">\(U_i\)</span> is a matrix with the subspace basis vectors as columns, <span class="math inline">\(\mathbb{y}\)</span> are the new coordinates in that basis, and <span class="math inline">\(\mathbb{\mu}_i\)</span> is the centre (in the case of affine subspaces). Our goal is to find the <span class="math inline">\(\mathbb{\mu}_i\)</span>, <span class="math inline">\(U_i\)</span>, the dimensionality <span class="math inline">\(d_i\)</span> of each subspace, and the cluster labels.</p>
-<p>This can be achieved in a number of ways (see <a href="this%20introduction">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.225.2898</a> for a comprehensive, yet not particularly clear introduction):</p>
+<p>This can be achieved in a number of ways (see [this introduction][<a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.225.2898" class="uri">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.225.2898</a>] for a comprehensive, yet not particularly clear introduction):</p>
 <ul>
 <li><p>Algebraic methods</p></li>
 <li><p>Generative methods</p></li>

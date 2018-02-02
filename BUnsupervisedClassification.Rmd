@@ -639,7 +639,9 @@ plot(data[sample,1],data[sample,4],pch=16,cex=.3, col=clusterCut)
 ## Subspace clustering
 
 Subspace clustering starts from the hypothesis that, although the data set has been drawn from a multi-variate distribution in D dimensions (usually $\mathbb{R}^D$), each cluster lives in a linear or affine subspace of the original space. Imagine for example, a data set in 3D, where the data points lie in
+
 1. two planes for clusters 1 & 2 
+
 2. a line for cluster 3
 
 The data set is the union of sets from each of the subspaces. The objective then is to find at the same time the cluster assignments, and the subspace definitions.
@@ -652,7 +654,7 @@ $$
 
 where $U_i$ is a matrix with the subspace basis vectors as columns, $\mathbb{y}$ are the new coordinates in that basis, and $\mathbb{\mu}_i$ is the centre (in the case of affine subspaces). Our goal is to find the $\mathbb{\mu}_i$, $U_i$, the dimensionality $d_i$ of each subspace, and the cluster labels.
 
-This can be achieved in a number of ways (see [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.225.2898](this introduction) for a comprehensive, yet not particularly clear introduction):
+This can be achieved in a number of ways (see [this introduction][http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.225.2898] for a comprehensive, yet not particularly clear introduction):
 
 * Algebraic methods
 
