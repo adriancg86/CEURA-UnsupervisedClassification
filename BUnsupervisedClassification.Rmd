@@ -617,19 +617,54 @@ plot(data[sample,1],data[sample,4],pch=16,cex=.3, col=clusterCut)
 
 ## Clustering evaluation measures
 
-### Connectedness
+First, some definitions:
+
+![Excerpt from the R NbClust [package description] (https://www.jstatsoft.org/article/view/v061i06)](images/defs.jpg)
+
+
+### External
+
+#### Purity
+
+![Excerpt from the wikipedia](images/purity.jpg)
+
+#### Rand index
+
+![Excerpt from the wikipedia](images/Rand.jpg)
+
+#### F-measure
+
+![Excerpt from the wikipedia](images/F-measure.jpg)
+
+#### Jaccard
+
+![Excerpt from the wikipedia](images/Jaccard.jpg)
+
+
+
+### Internal
+
+#### Connectedness
 
 ![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/connectedness.jpg)
 
-### Silhouette width
+#### Silhouette width
 
 ![](images/silhouette1.jpg)
 
 ![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/silhouette2.jpg)
 
-### Dunn index
+#### Dunn index
 
 ![Excerpt from the R clValid [package description] (ftp://cran.r-project.org/pub/R/web/packages/clValid/vignettes/clValid.pdf)](images/dunn.jpg)
+
+#### Gap statistic
+
+![Excerpt from the R NbClust [package description] (https://www.jstatsoft.org/article/view/v061i06)](images/Gap.jpg)
+
+#### Davies and Bouldin index
+
+![Excerpt from the R NbClust [package description] (https://www.jstatsoft.org/article/view/v061i06)](images/DB.jpg)
 
 
 #############################################################
@@ -717,14 +752,14 @@ Now it would be time to look at the *kernel trick* but we do not have time. Ther
 * One obvious (and potentially wrong) way to partition the graph is to find the cluster assignments that minimize 
 
 $$
-\mathcal{W}=\sum_{i=1}^{k} S(C_i,\neg{C_i})=\sum_{k\in C,k\in \neg{C_i}} s(j,k)
+\mathcal{W}=\sum_{i=1}^{k} S(C_i,\neg{C_i})=\sum_{j\in C_i,k\in \neg{C_i}} s(j,k)
 $$
 
-where C and C' are two clusters in our partition. It is potentially wrong because in many scenarios, the optimal solution would be to separate a single point. Hence, we need to bias the minimization process to avoid singular clusters. We could minimize $\mathcal{W}$ divided (scaled) by the cluster size (which we can approximate by 
+where the $C_i$ are clusters in our partition. It is potentially wrong because in many scenarios, the optimal solution would be to separate a single point. Hence, we need to bias the minimization process to avoid singular clusters. We could minimize $\mathcal{W}$ divided (scaled) by the cluster size (which we can approximate by 
 1. the number of vertices or 
 2. the so-called partition volume).
 
-* It turns out (but I will not prove it; it involves the Rayleigh-Ritz theorem) that minimizing (the scaled versions of) $\mathcal{W}$ **under some relaxation of the conditions** is equivalent to finding the eigenvectors of the so-called Laplace matrix. Depending on the scaling of \mathcal{W}, the Laplace matrix can be normalized or unnormalized (but this is just jargon): 
+* It turns out (but I will not prove it; it involves the Rayleigh-Ritz theorem) that minimizing (the scaled versions of) $\mathcal{W}$ **under some relaxation of the conditions** is equivalent to finding the eigenvectors of the so-called Laplace matrix. Depending on the scaling of $\mathcal{W}$, the Laplace matrix can be normalized or unnormalized (but this is just jargon): 
 1. $L = D - S$, the unnormalized Laplace matrix (scaling by the number of vertices)
 2. Normalized Laplace matrices:
   + $L_{sym}=D^{-1/2}LD{^{-1/2}}$ 
@@ -753,11 +788,11 @@ $A_i\cap A_j=\emptyset$ and $A_1\cup A_2\cup ... A_k=V$.
 
 The (justified) hope is that the new space of characteristics is more separable than the original one. 
 
-#### Spectral clustering with the normalized symmetric Laplacian
+#### Spectral clustering with the normalized random walk Laplacian
 
 ![Excerpt from the [tutorial by Ulrike von Luxburg](http://link.springer.com/article/10.1007/s11222-007-9033-z)](images/normalized1.png)
 
-#### Spectral clustering with the normalized random walk Laplacian
+#### Spectral clustering with the normalized symmetric Laplacian
 
 ![Excerpt from the [tutorial by Ulrike von Luxburg](http://link.springer.com/article/10.1007/s11222-007-9033-z)](images/normalized2.png)
 
