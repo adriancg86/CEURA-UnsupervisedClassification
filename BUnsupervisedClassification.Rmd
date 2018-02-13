@@ -873,10 +873,9 @@ for classical k-means. This synthetic variable is the first principal component
 calculated by PCAmix. PCAmix is defined for a mixture of qualitative
 and quantitative variables and includes ordinary principal component analysis (PCA) 
 and multiple correspondence analysis (MCA) as special cases. 
+![Definition of cluster centre](images/coV1.png)
 
-![Definition of the strength of links between two cases](images/coV1.png)
-
-* Correlation ratio is defined as 
+* The correlation ratio is defined as 
 ![Definition of the correlation ratio](images/correlationRatio2.png)
 
 where $\bar{y}$ is the overall mean, $\bar{y}_x$ is the mean of cluster $x$, and $y_{xi}$ is the value of the i-th case in cluster $x$.
@@ -944,6 +943,17 @@ by determining which cluster contains the most neighbours to each point
 
 [Link to the paper presenting Proximus](http://people.cs.vt.edu/naren/papers/Proximus_TKDE.pdf)
 
+
+## Evaluation problem
+
+* Load the [transactions.RData](https://github.com/luis-sarro/CEURA/raw/master/transactions.RData) data set that contains the cases matrix. cases contains a database of transactions. Each row corresponds to a transaction (the buyer being a shop and the seller a logistics warehouse). 
+* There is no information on the buyer (multiple transactions coud correspond to the same seller). 
+* For a given row, each element contains a code that represents a product. It does not encode any information on the number of items purchase of the product corresponding to that code.
+* Since purchases contain different numbers of items, some rows have NA (not available) values. 
+
+* We want to find patterns as transaction types, not modelling the costumer. 
+
+* I want a 10 one-sided A4 pages work that distills the knowledge gained by you by applying unsupervised classification techniques to the cases matrix. This must include exploratory analysis of the variables, a discussion of the variables used and why, a discussion of the chosen algorithm(s) and of the results. 
 
 
 

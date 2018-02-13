@@ -1088,14 +1088,8 @@ d(x, y) = d_{\rm euclid} (x, y) + λ\cdot d_{\rm simplematching}(x, y),
 <div id="kmeansvar-package-clustofvar" class="section level3">
 <h3>kmeansvar (package ClustOfVar)</h3>
 <ul>
-<li>The center of a cluster of variables is a synthetic variable but is not a ’mean’ as for classical k-means. This synthetic variable is the first principal component calculated by PCAmix. PCAmix is defined for a mixture of qualitative and quantitative variables and includes ordinary principal component analysis (PCA) and multiple correspondence analysis (MCA) as special cases.</li>
-</ul>
-<div class="figure">
-<img src="images/coV1.png" alt="Definition of the strength of links between two cases" />
-<p class="caption">Definition of the strength of links between two cases</p>
-</div>
-<ul>
-<li>Correlation ratio is defined as <img src="images/correlationRatio2.png" alt="Definition of the correlation ratio" /></li>
+<li><p>The center of a cluster of variables is a synthetic variable but is not a ’mean’ as for classical k-means. This synthetic variable is the first principal component calculated by PCAmix. PCAmix is defined for a mixture of qualitative and quantitative variables and includes ordinary principal component analysis (PCA) and multiple correspondence analysis (MCA) as special cases. <img src="images/coV1.png" alt="Definition of cluster centre" /></p></li>
+<li><p>The correlation ratio is defined as <img src="images/correlationRatio2.png" alt="Definition of the correlation ratio" /></p></li>
 </ul>
 <p>where <span class="math inline">\(\bar{y}\)</span> is the overall mean, <span class="math inline">\(\bar{y}_x\)</span> is the mean of cluster <span class="math inline">\(x\)</span>, and <span class="math inline">\(y_{xi}\)</span> is the value of the i-th case in cluster <span class="math inline">\(x\)</span>.</p>
 <p>The correlation ratio <span class="math inline">\(\eta\)</span> takes values between 0 and 1. The limit <span class="math inline">\(\eta\)</span> =0 represents the special case of no dispersion among the means of the different categories, while <span class="math inline">\(\eta =1\)</span> refers to no dispersion within the respective categories. <span class="math inline">\(\eta\)</span> is undefined when all data points of the complete population take the same value.</p>
@@ -1143,6 +1137,17 @@ d(x, y) = d_{\rm euclid} (x, y) + λ\cdot d_{\rm simplematching}(x, y),
 <h3>Proximus (package cba “Clustering for business analytics”)</h3>
 <p><a href="http://people.cs.vt.edu/naren/papers/Proximus_TKDE.pdf">Link to the paper presenting Proximus</a></p>
 </div>
+</div>
+<div id="evaluation-problem" class="section level2">
+<h2>Evaluation problem</h2>
+<ul>
+<li>Load the <a href="https://github.com/luis-sarro/CEURA/raw/master/transactions.RData">transactions.RData</a> data set that contains the cases matrix. cases contains a database of transactions. Each row corresponds to a transaction (the buyer being a shop and the seller a logistics warehouse).</li>
+<li>There is no information on the buyer (multiple transactions coud correspond to the same seller).</li>
+<li>For a given row, each element contains a code that represents a product. It does not encode any information on the number of items purchase of the product corresponding to that code.</li>
+<li><p>Since purchases contain different numbers of items, some rows have NA (not available) values.</p></li>
+<li><p>We want to find patterns as transaction types, not modelling the costumer.</p></li>
+<li><p>I want a 10 one-sided A4 pages work that distills the knowledge gained by you by applying unsupervised classification techniques to the cases matrix. This must include exploratory analysis of the variables, a discussion of the variables used and why, a discussion of the chosen algorithm(s) and of the results.</p></li>
+</ul>
 </div>
 </div>
 
