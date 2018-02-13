@@ -806,3 +806,60 @@ The (justified) hope is that the new space of characteristics is more separable 
 
 ```
 
+
+# Non-continuous variables 
+
+## Types of variables
+
+* continuous variables: dissimilarity measured with $L$-norms. The $L^2$ norm is the euclidean distance. If we use a different exponent, then we get several metrics like Minkowski, taxicab or Manhattan, absolute norm...  
+* discrete variables 
+  * binary 
+  * categorical 
+  * rankings or ordered variables
+
+It is important to remark again that the features used in a clustering analysis have to be put on a common scale in order to avoid the clustering results being dominated by a few variables with very large ranges. What this scale is depends on your problem and clustering algorithm. The most common choices are:
+
+* Indexing: divide by the mean of the values of a given attribute. The problem lies in the outlier the distances of which will dominate in the analysis.
+* Scaling: subtract the minimum  and divide by the range of the resulting values. This way, the final range is [0,1]. Variants include scaling to the [-1,1] range if symmetry is a desired property.
+* Normalization/Standarization: subtract the mean and divide by the standard deviation. Again, prone to problems if we have not cleaned our data from outliers or if the distribution of values is very far from Gaussian. A more robust alternative consists in subtracting the median and dividing by the median absolute deviation (MAD).
+
+Once we have corrected for scale differences, we can look at common measures of (dis)similarity for non-continuous variables. For binary variables, you can use the classical measures:
+
+![Classical similarity measures for binary vectors](images/binarymetrics.png)
+
+where $S_{ij}$ is the number of elements that are i in vector 1 and j in vector 2. For example, for vectors (0,1,1,1,1,0,1) and (1,1,1,0,1,0,0), $S_{00}=1$, $S_{01}=1$, $S_{10}=2$, and $S_{11}=3$. 
+
+A very important addition is the Hamming distance. "In information theory, the Hamming distance between two strings of equal length is the number of positions at which the corresponding symbols are different. In other words, it measures the minimum number of substitutions required to change one string into the other, or the minimum number of errors that could have transformed one string into the other." (From the wikipedia). This will prove useful for categorical variables. It is usually normalized by dividing by the number of vector elements (the length).
+
+Each similarity measure has an associated dissimilarity measure:
+
+![Classical similarity measures for binary vectors](images/binarymetrics2.png)
+
+
+The Hamming distance can also be used to measure (dis)similarity between vectors of categorical variables. In particular, we could use it to measure distance between strings: d("house","mouse")=1. It could even be applied to strings of different length is we count symbols in both strings. 
+
+An alternative to the Hamming distance for vectors of categorical variables is the binarization: convert a categorical variable like colour or profession into a series of binary variables. This requires knowledge of the universe. For example, if we have a variable that can take values in the following set {teacher, businessman, salesman, tertiary} we can cast it into four binary values that take the value 1 if and only if the categorical value coincides. Order here is important: assuming the order above, the case of a salesman would be characterized by the following four binary values: (0,0,1,0). Of course, this would even be more useful in the case where a variable can simultaneously take several values.
+
+
+For ordered variables like rankings, we have an alternative: treating them as intervals. Take for example the case where we have 6 different categories in a company (trainee, temporary, stable, supervisor, coordinator, chief). The simplest approach would be to assign a natural number to each from 0 to 6; then, rescale the range to [0,1] dividing by the maximum. Of course, we have freedom to use non-equidistant schemes if the chief and coordinators are closer to one another than trainee and temporary, for example. This is also the case of unequal bins in histograms (distances between intervals).
+
+
+Now, if we have a mixtures of several types of variables, we can use some kind of weighting scheme:
+
+$
+d(i,j)=\sum_{k=1}^K\frac{w_k\cdot d^k(i,k)}{w_{k}}
+$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
