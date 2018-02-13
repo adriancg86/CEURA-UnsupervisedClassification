@@ -825,7 +825,7 @@ It is important to remark again that the features used in a clustering analysis 
 
 Once we have corrected for scale differences, we can look at common measures of (dis)similarity for non-continuous variables. For binary variables, you can use the classical measures:
 
-![Classical similarity measures for binary vectors](images/binarymetrics.png)
+![Classical similarity measures for binary vectors](images/binarymetrics.jpg)
 
 where $S_{ij}$ is the number of elements that are i in vector 1 and j in vector 2. For example, for vectors (0,1,1,1,1,0,1) and (1,1,1,0,1,0,0), $S_{00}=1$, $S_{01}=1$, $S_{10}=2$, and $S_{11}=3$. 
 
@@ -833,7 +833,7 @@ A very important addition is the Hamming distance. "In information theory, the H
 
 Each similarity measure has an associated dissimilarity measure:
 
-![Classical similarity measures for binary vectors](images/binarymetrics2.png)
+![Classical similarity measures for binary vectors](images/binarymetrics2.jpg)
 
 
 The Hamming distance can also be used to measure (dis)similarity between vectors of categorical variables. In particular, we could use it to measure distance between strings: d("house","mouse")=1. It could even be applied to strings of different length is we count symbols in both strings. 
@@ -846,13 +846,103 @@ For ordered variables like rankings, we have an alternative: treating them as in
 
 Now, if we have a mixtures of several types of variables, we can use some kind of weighting scheme:
 
-$
+$$
 d(i,j)=\sum_{k=1}^K\frac{w_k\cdot d^k(i,k)}{w_{k}}
-$
+$$
+
+
+## Algorithms
+
+### k-prototypes for mixed (categorical and numeric) variables (package clustMixedType)
+
+The algorithm iteratively recomputes cluster prototypes and reassigns clusters (EM). Clusters are assigned using 
+
+
+$$
+d(x, y) = d_{\rm euclid} (x, y) + λ\cdot d_{\rm simplematching}(x, y),
+$$
+
+where $d_{\rm simplematching}$ is the Sokal-Michener similarity measure described above.
+
+Cluster prototypes are computed as cluster means for numeric variables and modes for factors (cf. Huang, 1998).
+
+### kmeansvar (package ClustOfVar)
+
+* The center of a cluster of variables is a synthetic variable but is not a ’mean’ as
+for classical k-means. This synthetic variable is the first principal component 
+calculated by PCAmix. PCAmix is defined for a mixture of qualitative
+and quantitative variables and includes ordinary principal component analysis (PCA) 
+and multiple correspondence analysis (MCA) as special cases. 
+
+![Definition of the strength of links between two cases](images/coV1.png)
+
+* Correlation ratio is defined as 
+![Definition of the correlation ratio](images/correlationRatio2.png)
+
+where $\bar{y}$ is the overall mean, $\bar{y}_x$ is the mean of cluster $x$, and $y_{xi}$ is the value of the i-th case in cluster $x$.
+
+The correlation ratio $\eta$ takes values between 0 and 1. The limit $\eta$ =0 represents the special case of no dispersion among the means of the different categories, while $\eta =1$ refers to no dispersion within the respective categories. $\eta$ is undefined when all data points of the complete population take the same value.
+
+* The homogeneity of a 
+cluster of variables is defined as the sum of the correlation ratio (for qualitative 
+variables) and the squared correlation (for quantitative variables) between the 
+variables and the center of the cluster, which is in all cases a
+numerical variable. 
+
+* Missing values are replaced by means for quantitative variables 
+and by zeros in the indicator matrix for qualitative variables.
+
+### hclustvar (package ClustOfVar)
+
+* Ascendant hierarchical clustering of a set of variables. Variables can be 
+quantitative, qualitative or a mixture of both. The aggregation criterion is the 
+decrease in homogeneity for the clusters being merged. 
+
+* The homogeneity of a cluster is the sum of the correlation ratio (for qualitative 
+variables) and the squared correlation (for quantitative variables) between the 
+variables and the center of the cluster which is the first principal component of 
+PCAmix. PCAmix is defined for a mixture of qualitative and quantitative variables and
+includes ordinary principal component analysis (PCA) and multiple correspondence 
+analysis (MCA) as special cases. Missing values are replaced by means for 
+quantitative variables and by zeros in the indicator matrix for qualitative 
+variables.
+
+
+### Rock (package cba "Clustering for business analytics")
+
+* It is a hierarchical clustering algorithm.
+* Based on neighbourhoods of point: If point A neighbours point C, and point B neighbours point C then the points A and B are *linked*, even if they are not themselves neighbours.
+* The idea is that if two points belong to the same cluster they should have many common neighbours and if they belong to different clusters they will have few common neighbours.
+* Define a similarity function, $sim(p_1,p_2 )$, that encodes the level of similarity
+or closeness between two points.
+* Normalise so that $sim(p_1,p_2 )$ is one when $p_1$ equals $p_2$ and zero when they
+are completely dissimilar.
+* We then consider $p_1$ and $p_2$ to be ’neighbours’ if $sim(p_1,p_2) \geq \theta$, where $\theta$ is a user-provided paramater
 
 
 
+![Definition of the strength of links between two cases](images/Rock1.png)
 
+The similarity measure most commonly used in transactions is the Jacard index.
+
+So what is Rock? Robust Clustering with linKs. It is  hierarchical clustering algorithm based on the link function above. It iteratively merges the two clusters that maximize the following objective function:
+
+![Rock's objective function](images/Rock2.png)
+
+where $n_i$ and $n_j$ represent the number of elements in clusters $i$ and $j$, the numerator represents the number of links between both clusters considering all potential pairs, and the denominator represents the increment in the expected number of links after merging. $f(\theta)$ is a function such that $n^{f(\theta)}$ represents the expected number of neighbours in a cluster of size $n$. 
+
+* It turns out that it is sufficient for $f(\theta)$ to be a reasonable function to produce sensible results. For example, for market transactions, $f(\theta)=\frac{1-\theta}{1+\theta}$ is a good choice.
+
+* How do we handle catagorical attributes with the possibility of missing data? Convert them into binary variables. This even allows for missing data.
+* If we have a huge number of points we can select a random sample with which to do the clustering.
+* Once clustering is complete we assign the remaining datapoints from disk
+by determining which cluster contains the most neighbours to each point
+(normalised by the expected number of neighbours).
+
+
+### Proximus (package cba "Clustering for business analytics")
+
+[Link to the paper presenting Proximus](http://people.cs.vt.edu/naren/papers/Proximus_TKDE.pdf)
 
 
 

@@ -1056,21 +1056,93 @@ mask &lt;-<span class="st"> </span>cluster<span class="op">$</span>cluster<span 
 </ul>
 <p>Once we have corrected for scale differences, we can look at common measures of (dis)similarity for non-continuous variables. For binary variables, you can use the classical measures:</p>
 <div class="figure">
-<img src="images/binarymetrics.png" alt="Classical similarity measures for binary vectors" />
+<img src="images/binarymetrics.jpg" alt="Classical similarity measures for binary vectors" />
 <p class="caption">Classical similarity measures for binary vectors</p>
 </div>
 <p>where <span class="math inline">\(S_{ij}\)</span> is the number of elements that are i in vector 1 and j in vector 2. For example, for vectors (0,1,1,1,1,0,1) and (1,1,1,0,1,0,0), <span class="math inline">\(S_{00}=1\)</span>, <span class="math inline">\(S_{01}=1\)</span>, <span class="math inline">\(S_{10}=2\)</span>, and <span class="math inline">\(S_{11}=3\)</span>.</p>
 <p>A very important addition is the Hamming distance. “In information theory, the Hamming distance between two strings of equal length is the number of positions at which the corresponding symbols are different. In other words, it measures the minimum number of substitutions required to change one string into the other, or the minimum number of errors that could have transformed one string into the other.” (From the wikipedia). This will prove useful for categorical variables. It is usually normalized by dividing by the number of vector elements (the length).</p>
 <p>Each similarity measure has an associated dissimilarity measure:</p>
 <div class="figure">
-<img src="images/binarymetrics2.png" alt="Classical similarity measures for binary vectors" />
+<img src="images/binarymetrics2.jpg" alt="Classical similarity measures for binary vectors" />
 <p class="caption">Classical similarity measures for binary vectors</p>
 </div>
 <p>The Hamming distance can also be used to measure (dis)similarity between vectors of categorical variables. In particular, we could use it to measure distance between strings: d(“house”,“mouse”)=1. It could even be applied to strings of different length is we count symbols in both strings.</p>
 <p>An alternative to the Hamming distance for vectors of categorical variables is the binarization: convert a categorical variable like colour or profession into a series of binary variables. This requires knowledge of the universe. For example, if we have a variable that can take values in the following set {teacher, businessman, salesman, tertiary} we can cast it into four binary values that take the value 1 if and only if the categorical value coincides. Order here is important: assuming the order above, the case of a salesman would be characterized by the following four binary values: (0,0,1,0). Of course, this would even be more useful in the case where a variable can simultaneously take several values.</p>
 <p>For ordered variables like rankings, we have an alternative: treating them as intervals. Take for example the case where we have 6 different categories in a company (trainee, temporary, stable, supervisor, coordinator, chief). The simplest approach would be to assign a natural number to each from 0 to 6; then, rescale the range to [0,1] dividing by the maximum. Of course, we have freedom to use non-equidistant schemes if the chief and coordinators are closer to one another than trainee and temporary, for example. This is also the case of unequal bins in histograms (distances between intervals).</p>
 <p>Now, if we have a mixtures of several types of variables, we can use some kind of weighting scheme:</p>
-<p>$ d(i,j)=_{k=1}^K $</p>
+<p><span class="math display">\[
+d(i,j)=\sum_{k=1}^K\frac{w_k\cdot d^k(i,k)}{w_{k}}
+\]</span></p>
+</div>
+<div id="algorithms" class="section level2">
+<h2>Algorithms</h2>
+<div id="k-prototypes-for-mixed-categorical-and-numeric-variables-package-clustmixedtype" class="section level3">
+<h3>k-prototypes for mixed (categorical and numeric) variables (package clustMixedType)</h3>
+<p>The algorithm iteratively recomputes cluster prototypes and reassigns clusters (EM). Clusters are assigned using</p>
+<p><span class="math display">\[
+d(x, y) = d_{\rm euclid} (x, y) + λ\cdot d_{\rm simplematching}(x, y),
+\]</span></p>
+<p>where <span class="math inline">\(d_{\rm simplematching}\)</span> is the Sokal-Michener similarity measure described above.</p>
+<p>Cluster prototypes are computed as cluster means for numeric variables and modes for factors (cf. Huang, 1998).</p>
+</div>
+<div id="kmeansvar-package-clustofvar" class="section level3">
+<h3>kmeansvar (package ClustOfVar)</h3>
+<ul>
+<li>The center of a cluster of variables is a synthetic variable but is not a ’mean’ as for classical k-means. This synthetic variable is the first principal component calculated by PCAmix. PCAmix is defined for a mixture of qualitative and quantitative variables and includes ordinary principal component analysis (PCA) and multiple correspondence analysis (MCA) as special cases.</li>
+</ul>
+<div class="figure">
+<img src="images/coV1.png" alt="Definition of the strength of links between two cases" />
+<p class="caption">Definition of the strength of links between two cases</p>
+</div>
+<ul>
+<li>Correlation ratio is defined as <img src="images/correlationRatio2.png" alt="Definition of the correlation ratio" /></li>
+</ul>
+<p>where <span class="math inline">\(\bar{y}\)</span> is the overall mean, <span class="math inline">\(\bar{y}_x\)</span> is the mean of cluster <span class="math inline">\(x\)</span>, and <span class="math inline">\(y_{xi}\)</span> is the value of the i-th case in cluster <span class="math inline">\(x\)</span>.</p>
+<p>The correlation ratio <span class="math inline">\(\eta\)</span> takes values between 0 and 1. The limit <span class="math inline">\(\eta\)</span> =0 represents the special case of no dispersion among the means of the different categories, while <span class="math inline">\(\eta =1\)</span> refers to no dispersion within the respective categories. <span class="math inline">\(\eta\)</span> is undefined when all data points of the complete population take the same value.</p>
+<ul>
+<li><p>The homogeneity of a cluster of variables is defined as the sum of the correlation ratio (for qualitative variables) and the squared correlation (for quantitative variables) between the variables and the center of the cluster, which is in all cases a numerical variable.</p></li>
+<li><p>Missing values are replaced by means for quantitative variables and by zeros in the indicator matrix for qualitative variables.</p></li>
+</ul>
+</div>
+<div id="hclustvar-package-clustofvar" class="section level3">
+<h3>hclustvar (package ClustOfVar)</h3>
+<ul>
+<li><p>Ascendant hierarchical clustering of a set of variables. Variables can be quantitative, qualitative or a mixture of both. The aggregation criterion is the decrease in homogeneity for the clusters being merged.</p></li>
+<li><p>The homogeneity of a cluster is the sum of the correlation ratio (for qualitative variables) and the squared correlation (for quantitative variables) between the variables and the center of the cluster which is the first principal component of PCAmix. PCAmix is defined for a mixture of qualitative and quantitative variables and includes ordinary principal component analysis (PCA) and multiple correspondence analysis (MCA) as special cases. Missing values are replaced by means for quantitative variables and by zeros in the indicator matrix for qualitative variables.</p></li>
+</ul>
+</div>
+<div id="rock-package-cba-clustering-for-business-analytics" class="section level3">
+<h3>Rock (package cba “Clustering for business analytics”)</h3>
+<ul>
+<li>It is a hierarchical clustering algorithm.</li>
+<li>Based on neighbourhoods of point: If point A neighbours point C, and point B neighbours point C then the points A and B are <em>linked</em>, even if they are not themselves neighbours.</li>
+<li>The idea is that if two points belong to the same cluster they should have many common neighbours and if they belong to different clusters they will have few common neighbours.</li>
+<li>Define a similarity function, <span class="math inline">\(sim(p_1,p_2 )\)</span>, that encodes the level of similarity or closeness between two points.</li>
+<li>Normalise so that <span class="math inline">\(sim(p_1,p_2 )\)</span> is one when <span class="math inline">\(p_1\)</span> equals <span class="math inline">\(p_2\)</span> and zero when they are completely dissimilar.</li>
+<li>We then consider <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> to be ’neighbours’ if <span class="math inline">\(sim(p_1,p_2) \geq \theta\)</span>, where <span class="math inline">\(\theta\)</span> is a user-provided paramater</li>
+</ul>
+<div class="figure">
+<img src="images/Rock1.png" alt="Definition of the strength of links between two cases" />
+<p class="caption">Definition of the strength of links between two cases</p>
+</div>
+<p>The similarity measure most commonly used in transactions is the Jacard index.</p>
+<p>So what is Rock? Robust Clustering with linKs. It is hierarchical clustering algorithm based on the link function above. It iteratively merges the two clusters that maximize the following objective function:</p>
+<div class="figure">
+<img src="images/Rock2.png" alt="Rock’s objective function" />
+<p class="caption">Rock’s objective function</p>
+</div>
+<p>where <span class="math inline">\(n_i\)</span> and <span class="math inline">\(n_j\)</span> represent the number of elements in clusters <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, the numerator represents the number of links between both clusters considering all potential pairs, and the denominator represents the increment in the expected number of links after merging. <span class="math inline">\(f(\theta)\)</span> is a function such that <span class="math inline">\(n^{f(\theta)}\)</span> represents the expected number of neighbours in a cluster of size <span class="math inline">\(n\)</span>.</p>
+<ul>
+<li><p>It turns out that it is sufficient for <span class="math inline">\(f(\theta)\)</span> to be a reasonable function to produce sensible results. For example, for market transactions, <span class="math inline">\(f(\theta)=\frac{1-\theta}{1+\theta}\)</span> is a good choice.</p></li>
+<li>How do we handle catagorical attributes with the possibility of missing data? Convert them into binary variables. This even allows for missing data.</li>
+<li>If we have a huge number of points we can select a random sample with which to do the clustering.</li>
+<li><p>Once clustering is complete we assign the remaining datapoints from disk by determining which cluster contains the most neighbours to each point (normalised by the expected number of neighbours).</p></li>
+</ul>
+</div>
+<div id="proximus-package-cba-clustering-for-business-analytics" class="section level3">
+<h3>Proximus (package cba “Clustering for business analytics”)</h3>
+<p><a href="http://people.cs.vt.edu/naren/papers/Proximus_TKDE.pdf">Link to the paper presenting Proximus</a></p>
+</div>
 </div>
 </div>
 
